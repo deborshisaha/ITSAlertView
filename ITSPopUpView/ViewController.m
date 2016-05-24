@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "ITSAlertView.h"
 
 @interface ViewController ()
 
@@ -19,9 +20,13 @@
 	// Do any additional setup after loading the view, typically from a nib.
 }
 
-- (void)didReceiveMemoryWarning {
-	[super didReceiveMemoryWarning];
-	// Dispose of any resources that can be recreated.
+- (IBAction)showPopUpClicked:(id)sender {
+	
+	ITSAlertView *alertView = [ITSAlertView initWithTitle:@"Pop up" description:@"Description" buttonTitles:@[@"Cancel"] negativeButtonIndex:0 buttonPressedBlock:^(NSInteger buttonIndex) {
+		NSLog(@"Hello");
+	} attachToView:nil alertContentBackgroundType:ITSAlertViewContentBackgroundTypeSolid];
+	
+	[alertView show];
 }
 
 @end

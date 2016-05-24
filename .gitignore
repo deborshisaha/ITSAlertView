@@ -1,0 +1,27 @@
+**/.DS_Store
+**/DerivedData
+**/Pods
+**/xcuserdata
+**/tmp
+test-reports
+**/ObjectiveC.gcda
+**/ObjectiveC.gcno
+
+out
+Pods
+Podfile.lock
+DerivedData
+release
+release.xcarchive
+
+##### AppleCode files ####
+.idea
+
+##### User Specific Files ####
+*.xcodeproj/xcuserdata/*.xcuserdatad
+*.xcworkspace/xcuserdata/*.xcuserdatad
+*.xccheckout
+
+##### Pod Files ####
+Podfile.lock
+*.xcworkspace
