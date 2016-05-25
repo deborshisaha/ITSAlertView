@@ -8,6 +8,12 @@
 
 @interface ITSAlertViewBrandingManager : NSObject
 
+//// AlertView view maximumWidth
+//@property (nonatomic, readonly) CGFloat maximumWidth;
+//
+//// AlertView view maximumHeight
+//@property (nonatomic, readonly) CGFloat maximumHeight;
+
 // AlertView view width
 @property (nonatomic, readonly) CGFloat width;
 
@@ -61,6 +67,16 @@
 
 // AlertView buttonNegativeBold
 @property (nonatomic, readonly) BOOL buttonNegativeBold;
+
+// AlertView flexibleHeight
+@property (nonatomic, readonly) BOOL flexibleHeight;
+
+// AlertView headerTitleTextAlignment
+@property (nonatomic, readonly) NSTextAlignment headerTitleTextAlignment;
+
+@property (nonatomic, readonly) NSTextAlignment headerSubTitleTextAlignment;
+
+@property (nonatomic, readonly) CGFloat headerPadding;
 
 + (instancetype) sharedManager;
 + (void) initializeWithBrandingFile: (NSString *) fileName andBundle: (NSBundle *) bundle;

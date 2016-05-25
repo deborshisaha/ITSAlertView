@@ -80,13 +80,42 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewContentBackgroundType) {
 // instantiate with Pop up view delegate object
 
 // instantiate with title, description, buttons and block on button press
-+ (instancetype) initWithTitle: (NSString *) title
-				   description: (NSString *) description
-				  buttonTitles: (NSArray *) arrayOfButtons
-		   negativeButtonIndex: (NSInteger) negativeButtonIndex
-			buttonPressedBlock: (void (^)(NSInteger buttonIndex))buttonPressedBlock
-				  attachToView: (UIView *) view
-	alertContentBackgroundType: (ITSAlertViewContentBackgroundType)alertViewContentBackgroundType;
+//+ (instancetype) initWithTitle: (NSString *) title
+//				   description: (NSString *) description
+//				  buttonTitles: (NSArray *) arrayOfButtons
+//		   negativeButtonIndex: (NSInteger) negativeButtonIndex
+//			buttonPressedBlock: (void (^)(NSInteger buttonIndex))buttonPressedBlock
+//				  attachToView: (UIView *) view
+//	alertContentBackgroundType: (ITSAlertViewContentBackgroundType)alertViewContentBackgroundType;
+
+//+ (instancetype) initWithTitle: (NSString *) title
+//                   headerImage: (UIImage *) headerImage
+//                   description: (NSString *) description
+//                  buttonTitles: (NSArray *) arrayOfButtons
+//           negativeButtonIndex: (NSInteger) negativeButtonIndex
+//            buttonPressedBlock: (void (^)(NSInteger buttonIndex))buttonPressedBlock
+//                  attachToView: (UIView *) view
+//    alertContentBackgroundType: (ITSAlertViewContentBackgroundType)alertViewContentBackgroundType;
+
+- (instancetype) initWithTitle: (NSString *) title
+                      subtitle: (NSString *) subtitle
+                   headerImage: (UIImage *) headerImage
+                   description: (NSString *) description
+                  buttonTitles: (NSArray *) arrayOfButtonTitles
+           negativeButtonIndex: (NSInteger) negativeButtonIndex
+            buttonPressedBlock: (void (^)(NSInteger buttonIndex))buttonPressedBlock
+                  attachToView: (UIView *) view
+    alertContentBackgroundType: (ITSAlertViewContentBackgroundType)alertViewContentBackgroundType;
+
+- (instancetype) initWithTitle: (NSString *) title
+                      subtitle: (NSString *) subtitle
+                   headerImage: (UIImage *) headerImage
+           embeddedContentView: (UIView *) embeddedContentView
+                  buttonTitles: (NSArray *) arrayOfButtonTitles
+           negativeButtonIndex: (NSInteger) negativeButtonIndex
+            buttonPressedBlock: (void (^)(NSInteger buttonIndex))buttonPressedBlock
+                  attachToView: (UIView *) view
+    alertContentBackgroundType: (ITSAlertViewContentBackgroundType)alertViewContentBackgroundType;
 
 - (void) show;
 

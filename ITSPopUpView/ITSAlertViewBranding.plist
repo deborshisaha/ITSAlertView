@@ -4,6 +4,15 @@
 <dict>
 	<key>alert</key>
 	<dict>
+		<key>header</key>
+		<dict>
+			<key>subTitleTextAlignment</key>
+			<integer>1</integer>
+			<key>titleTextAlignment</key>
+			<integer>1</integer>
+			<key>padding</key>
+			<integer>24</integer>
+		</dict>
 		<key>button</key>
 		<dict>
 			<key>default</key>
@@ -24,17 +33,17 @@
 				<key>bold</key>
 				<true/>
 				<key>titleColor</key>
-				<string>#FFFF0000</string>
-				<key>onPressTitleColor</key>
-				<string>#FFFF0000</string>
-				<key>backgroundColor</key>
 				<string>#FFFFFFFF</string>
+				<key>onPressTitleColor</key>
+				<string>#FFFFFFFF</string>
+				<key>backgroundColor</key>
+				<string>#FFFF0000</string>
 				<key>onPressBackgroundColor</key>
-				<string>#FFFAFAFA</string>
+				<string>#E5E50000</string>
 			</dict>
 		</dict>
-		<key>dimissOnTapOutside</key>
-		<false/>
+		<key>dismissOnTapOutside</key>
+		<true/>
 		<key>contentBackground</key>
 		<dict>
 			<key>glossy</key>
@@ -63,8 +72,10 @@
 		</dict>
 		<key>dimensions</key>
 		<dict>
+			<key>flexibleHeight</key>
+			<true/>
 			<key>cornerRadius</key>
-			<integer>2</integer>
+			<integer>4</integer>
 			<key>height</key>
 			<integer>500</integer>
 			<key>width</key>

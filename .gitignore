@@ -25,3 +25,4 @@ release.xcarchive
 ##### Pod Files ####
 Podfile.lock
 *.xcworkspace
+*.pbxproj

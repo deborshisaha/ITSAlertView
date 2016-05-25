@@ -33,6 +33,11 @@ static NSDictionary *alertViewBrandingDictionary = nil;
 @synthesize buttonNegativeOnPressBackgroundColor = _buttonNegativeOnPressBackgroundColor;
 @synthesize buttonDefaultOnPressTitleColor = _buttonDefaultOnPressTitleColor;
 @synthesize buttonNegativeOnPressTitleColor = _buttonNegativeOnPressTitleColor;
+@synthesize headerTitleTextAlignment = _headerTitleTextAlignment;
+@synthesize headerSubTitleTextAlignment = _headerSubTitleTextAlignment;
+@synthesize headerPadding = _headerPadding;
+
+@synthesize flexibleHeight = _flexibleHeight;
 
 + (instancetype) sharedManager {
 	
@@ -90,7 +95,8 @@ static NSDictionary *alertViewBrandingDictionary = nil;
 	_width = [[dictionary valueForKeyPath:@"alert.dimensions.width"] floatValue];
 	_height = [[dictionary valueForKeyPath:@"alert.dimensions.height"] floatValue];
 	_cornerRadius = [[dictionary valueForKeyPath:@"alert.dimensions.cornerRadius"] floatValue];
-	
+	_flexibleHeight = [[dictionary valueForKeyPath:@"alert.dimensions.flexibleHeight"] boolValue];
+    
 	_backgroundOpacityAlpha = [[dictionary valueForKeyPath:@"alert.background.opacity.alpha"] floatValue];
 	_backgroundOpacityColor = [UIColor colorFromHexString:[dictionary valueForKeyPath:@"alert.background.opacity.tintColor"]];
 	
@@ -112,6 +118,21 @@ static NSDictionary *alertViewBrandingDictionary = nil;
 	_buttonDefaultOnPressTitleColor = [UIColor colorFromHexString:[dictionary valueForKeyPath:@"alert.button.default.onPressTitleColor"]];
 	_buttonNegativeOnPressTitleColor = [UIColor colorFromHexString:[dictionary valueForKeyPath:@"alert.button.negative.onPressTitleColor"]];
 	
+    _headerTitleTextAlignment = [self textAlignmentFromNumber: [[dictionary valueForKeyPath:@"alert.header.titleTextAlignment"] integerValue]];
+    _headerSubTitleTextAlignment = [self textAlignmentFromNumber: [[dictionary valueForKeyPath:@"alert.header.subTitleTextAlignment"] integerValue]];
+}
+
+- (NSTextAlignment) textAlignmentFromNumber: (NSInteger) alignment {
+    
+    switch (alignment) {
+        case 0:
+            return NSTextAlignmentLeft;
+        case 2:
+            return NSTextAlignmentRight;
+        case 1:
+        default:
+            return NSTextAlignmentCenter;
+    }
 }
 
 - (CGFloat) width {

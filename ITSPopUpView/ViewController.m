@@ -22,10 +22,14 @@
 
 - (IBAction)showPopUpClicked:(id)sender {
 	
-	ITSAlertView *alertView = [ITSAlertView initWithTitle:@"Pop up" description:@"Description" buttonTitles:@[@"Cancel"] negativeButtonIndex:0 buttonPressedBlock:^(NSInteger buttonIndex) {
-		NSLog(@"Hello");
-	} attachToView:nil alertContentBackgroundType:ITSAlertViewContentBackgroundTypeSolid];
+//    ITSAlertView *alertView = [ITSAlertView initWithTitle:@"Wish to upgrade?" headerImage:nil description:@"Upgrading to latest version protects you from vulnerabilities" buttonTitles:@[@"Cancel"] negativeButtonIndex:0 buttonPressedBlock:^(NSInteger buttonIndex) {
+//        NSLog(@"Hello");
+//    } attachToView:nil alertContentBackgroundType:ITSAlertViewContentBackgroundTypeSolid];
 	
+    ITSAlertView *alertView = [[ITSAlertView alloc] initWithTitle:@"Wish to upgrade?" subtitle:@"Upgrading to latest version protects your phone from vulnerabilities" headerImage:nil description:@"Description" buttonTitles:@[@"Cancel"] negativeButtonIndex:0 buttonPressedBlock:^(NSInteger buttonIndex) {
+        NSLog(@"Hello");
+    } attachToView:nil alertContentBackgroundType:ITSAlertViewContentBackgroundTypeSolid];
+    
 	[alertView show];
 }
 

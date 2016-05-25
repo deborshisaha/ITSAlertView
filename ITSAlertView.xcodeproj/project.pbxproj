@@ -141,7 +141,7 @@
 				TargetAttributes = {
 					C2D986F91CF3BC3F00A7CBAA = {
 						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = 49DNK83K53;
+						DevelopmentTeam = S2MCWJJ4R8;
 					};
 				};
 			};
@@ -339,6 +339,7 @@
 				C2D987131CF3BC3F00A7CBAA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
