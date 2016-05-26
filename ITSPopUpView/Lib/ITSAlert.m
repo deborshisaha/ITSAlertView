@@ -24,9 +24,8 @@
         _array = options;
         _selectedOptionsBlock = selectedOptionsBlock;
         _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-        _tableView.dataSource  = self;
         _tableView.delegate = self;
-        _tableView.allowsSelection = YES;
+		_tableView.dataSource  = self;
         _tableView.showsVerticalScrollIndicator = NO;
     }
     
@@ -80,13 +79,12 @@
 }
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
 	
 	if (self.array.count < indexPath.row) {
-		return cell;
+		return nil;
 	}
 	
+	UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
     cell.textLabel.text = self.array[indexPath.row];
     
     return cell;

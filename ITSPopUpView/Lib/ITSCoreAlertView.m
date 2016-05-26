@@ -587,6 +587,7 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
         }
         
         _contentView = [[UIView alloc] initWithFrame:contentViewFrame];
+		
         [_contentView addSubview: bodyTextLabel];
         
     } else if (self.tableView) {
@@ -607,10 +608,11 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
             self.tableView.scrollEnabled = NO;
         }
         
-        self.tableView.frame = CGRectMake(0, 0, self.alertViewWidth, CGRectGetHeight(contentViewFrame) );
+        self.tableView.frame = CGRectMake(0, 0.5f, self.alertViewWidth, CGRectGetHeight(contentViewFrame) - 0.5f );
         
         _contentView = [[UIView alloc] initWithFrame:contentViewFrame];
-
+		_tableView.opaque = YES;
+		
         [_contentView addSubview:_tableView];
     }
     
