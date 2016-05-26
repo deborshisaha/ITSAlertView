@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C2ACEB041CF67E33005E72DC /* ITSAlertViewLauncher.m in Sources */ = {isa = PBXBuildFile; fileRef = C2ACEB031CF67E33005E72DC /* ITSAlertViewLauncher.m */; };
+		C2ACEB041CF67E33005E72DC /* ITSAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = C2ACEB031CF67E33005E72DC /* ITSAlert.m */; };
 		C2D986FF1CF3BC3F00A7CBAA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D986FE1CF3BC3F00A7CBAA /* main.m */; };
 		C2D987021CF3BC3F00A7CBAA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D987011CF3BC3F00A7CBAA /* AppDelegate.m */; };
 		C2D987051CF3BC3F00A7CBAA /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D987041CF3BC3F00A7CBAA /* ViewController.m */; };
@@ -22,8 +22,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		C2ACEB021CF67E33005E72DC /* ITSAlertViewLauncher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITSAlertViewLauncher.h; sourceTree = "<group>"; };
-		C2ACEB031CF67E33005E72DC /* ITSAlertViewLauncher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITSAlertViewLauncher.m; sourceTree = "<group>"; };
+		C2ACEB021CF67E33005E72DC /* ITSAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITSAlert.h; sourceTree = "<group>"; };
+		C2ACEB031CF67E33005E72DC /* ITSAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITSAlert.m; sourceTree = "<group>"; };
 		C2D986FA1CF3BC3F00A7CBAA /* ITSAlertView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ITSAlertView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2D986FE1CF3BC3F00A7CBAA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		C2D987001CF3BC3F00A7CBAA /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -109,8 +109,8 @@
 				C2D987211CF3FE9700A7CBAA /* UIColor+ITSAlertView.m */,
 				C2D987231CF44EC900A7CBAA /* ITSButton.h */,
 				C2D987241CF44EC900A7CBAA /* ITSButton.m */,
-				C2ACEB021CF67E33005E72DC /* ITSAlertViewLauncher.h */,
-				C2ACEB031CF67E33005E72DC /* ITSAlertViewLauncher.m */,
+				C2ACEB021CF67E33005E72DC /* ITSAlert.h */,
+				C2ACEB031CF67E33005E72DC /* ITSAlert.m */,
 			);
 			path = Lib;
 			sourceTree = "<group>";
@@ -191,7 +191,7 @@
 				C2D987251CF44EC900A7CBAA /* ITSButton.m in Sources */,
 				C2D987051CF3BC3F00A7CBAA /* ViewController.m in Sources */,
 				C2D9871D1CF3DBC700A7CBAA /* ITSAlertViewBrandingManager.m in Sources */,
-				C2ACEB041CF67E33005E72DC /* ITSAlertViewLauncher.m in Sources */,
+				C2ACEB041CF67E33005E72DC /* ITSAlert.m in Sources */,
 				C2D987021CF3BC3F00A7CBAA /* AppDelegate.m in Sources */,
 				C2D986FF1CF3BC3F00A7CBAA /* main.m in Sources */,
 				C2D987221CF3FE9700A7CBAA /* UIColor+ITSAlertView.m in Sources */,

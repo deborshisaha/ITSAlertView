@@ -1,19 +1,20 @@
 //
-//  ITSAlertViewLauncher.m
-//  ITSAlertViewLauncher
+//  ITSAlert.m
+//  ITSAlert
 //
 
-#import "ITSAlertViewLauncher.h"
+#import "ITSAlert.h"
 #import "ITSCoreAlertView.h"
 
-@interface ITSAlertViewLauncher () <UITableViewDelegate, UITableViewDataSource>
+@interface ITSAlert () <UITableViewDelegate, UITableViewDataSource>
 @property(nonatomic, weak) ITSCoreAlertView *alertView;
 @property (nonatomic, strong) NSArray *array;
+@property (nonatomic, strong) NSArray *selectedOptionsIndices;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) SelectedOptionsBlock selectedOptionsBlock;
 @end
 
-@implementation ITSAlertViewLauncher
+@implementation ITSAlert
 
 - (instancetype) initMultiSelectWithOptions: (NSArray *) options selectedOptionsBlock: (SelectedOptionsBlock) selectedOptionsBlock {
     
@@ -32,10 +33,26 @@
     return self;
 }
 
+- (instancetype) initMultiSelectWithDataSource: (id<UITableViewDataSource>) dataSource selectedOptionsBlock: (SelectedOptionsBlock) selectedOptionsBlock {
+	
+	self = [super init];
+	
+	if (self) {
+		_selectedOptionsBlock = selectedOptionsBlock;
+		_tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+		_tableView.dataSource  = dataSource;
+		_tableView.delegate = self;
+		_tableView.allowsSelection = YES;
+		_tableView.showsVerticalScrollIndicator = NO;
+	}
+	
+	return self;
+}
+
 - (void) show {
-    
+	
     [self.tableView reloadData];
-    
+	
     ITSCoreAlertView *alertView = [[ITSCoreAlertView alloc] initWithTitle:@"Which is your favorite color?"
                                                                  subtitle:@"Knowing your favorite color makes this world a better place... Not really!"
                                                               headerImage:nil
@@ -65,7 +82,11 @@
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
-    
+	
+	if (self.array.count < indexPath.row) {
+		return cell;
+	}
+	
     cell.textLabel.text = self.array[indexPath.row];
     
     return cell;
@@ -73,6 +94,10 @@
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"%s", __PRETTY_FUNCTION__);
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return 48.0f;
 }
 
 @end

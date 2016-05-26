@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-#import "ITSAlertViewLauncher.h"
+#import "ITSAlert.h"
 #import <UIKit/UIKit.h>
 
 @interface ViewController ()
@@ -26,7 +26,7 @@
 
 - (IBAction)showPopUpClicked:(id)sender {
 	
-    ITSAlertViewLauncher *alertViewLauncher = [[ITSAlertViewLauncher alloc] initMultiSelectWithOptions:self.array selectedOptionsBlock:^(NSArray *selectedOptions) {
+    ITSAlert *alertViewLauncher = [[ITSAlert alloc] initMultiSelectWithOptions:self.array selectedOptionsBlock:^(NSArray *selectedOptions) {
         NSLog(@"%lu", (unsigned long)selectedOptions.count);
     }];
     

@@ -382,7 +382,7 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 			}
 		}
 		
-		[btn setTag:idx + 233];
+		[btn setTag:idx + 256];
 		[btn addTarget:self action:@selector(pressedOnTitleButton:) forControlEvents:UIControlEventTouchUpInside];
 		[view addSubview:btn];
 		
@@ -396,6 +396,11 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 }
 
 - (void)pressedOnTitleButton:(UIButton *)sender {
+	
+	if (self.buttonPressedBlock) {
+		self.buttonPressedBlock(sender.tag -256);
+	}
+	
 	[self hide];
 }
 
