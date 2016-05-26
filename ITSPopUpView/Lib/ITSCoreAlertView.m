@@ -1,9 +1,9 @@
 //
-//  ITSAlertView.m
-//  ITSAlertView
+//  ITSCoreAlertView.m
+//  ITSCoreAlertView
 //
 
-#import "ITSAlertView.h"
+#import "ITSCoreAlertView.h"
 #import "ITSAlertViewBrandingManager.h"
 #import "ITSButton.h"
 
@@ -16,7 +16,7 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
     ITSAlertViewHeaderTypeImageTitleSubtitle = 4
 };
 
-@interface ITSAlertView ()
+@interface ITSCoreAlertView ()
 
 @property(nonatomic, strong) UIView *alertContentView;
 @property(nonatomic, weak) UIView *parentView;
@@ -28,7 +28,7 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 
 @property(nonatomic, strong) UIView *headerView;
 @property(nonatomic, strong) UIView *contentView;
-@property(nonatomic, strong) UIView *embeddedContentView;
+@property(nonatomic, strong) UITableView *tableView;
 @property(nonatomic, strong) UIView *footerView;
 
 @property(nonatomic, strong) NSArray *buttonTitles;
@@ -50,7 +50,7 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 
 @end
 
-@implementation ITSAlertView
+@implementation ITSCoreAlertView
 
 //+ (instancetype) initWithTitle: (NSString *) title
 //				   description: (NSString *) description
@@ -131,8 +131,9 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
         [self constructView];
         
         [self.alertContentView addSubview:[self headerView]];
-        [self.alertContentView addSubview:[self contentView]];
         [self.alertContentView addSubview:[self footerView]];
+        [self.alertContentView addSubview:[self contentView]];
+        
         
         [self layoutSubviews];
         
@@ -145,12 +146,48 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 - (instancetype) initWithTitle: (NSString *) title
                       subtitle: (NSString *) subtitle
                    headerImage: (UIImage *) headerImage
-           embeddedContentView: (UIView *) embeddedContentView
+                     tableView: (UITableView *) tableView
                   buttonTitles: (NSArray *) arrayOfButtonTitles
            negativeButtonIndex: (NSInteger) negativeButtonIndex
             buttonPressedBlock: (void (^)(NSInteger buttonIndex))buttonPressedBlock
                   attachToView: (UIView *) view
     alertContentBackgroundType: (ITSAlertViewContentBackgroundType)alertViewContentBackgroundType {
+    
+    view = (nil == view) ? [UIApplication sharedApplication].keyWindow : view;
+    
+    self = [super initWithFrame:view.bounds];
+    
+    if (self) {
+        _parentView = view;
+        _headerTitle = title;
+        _subTitle = subtitle;
+        _headerImage = headerImage;
+        _tableView = tableView;
+        _buttonTitles = [NSArray arrayWithArray:arrayOfButtonTitles];
+        _negativeButtonIndex = negativeButtonIndex;
+        _buttonPressedBlock = buttonPressedBlock;
+        _alertViewContentBackgroundType = alertViewContentBackgroundType;
+        _alertViewHeaderType = ITSAlertViewHeaderTypeTitle;
+        
+        if (headerImage && title) {
+            _alertViewHeaderType = ITSAlertViewHeaderTypeImageTitle;
+        } else if (headerImage && title && subtitle) {
+            _alertViewHeaderType = ITSAlertViewHeaderTypeImageTitleSubtitle;
+        } else if (title && subtitle) {
+            _alertViewHeaderType = ITSAlertViewHeaderTypeTitleSubtitle;
+        }
+        
+        [self constructView];
+        
+        [self.alertContentView addSubview:[self headerView]];
+        [self.alertContentView addSubview:[self footerView]];
+        [self.alertContentView addSubview: [self contentView]];
+        
+        
+        [self layoutSubviews];
+        
+        self.alertContentView.frame = CGRectOffset(self.alertContentView.frame, 0, CGRectGetMidY(self.alertContentView.frame) - CGRectGetMidY(_parentView.frame)/2);
+    }
     
     return self;
 }
@@ -192,24 +229,24 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 	}
 	
 	if (nil == [self superview]) {
+        self.alertContentView.center = self.center;
 		[self.parentView addSubview:self];
 	}
 	
 	[self.layer setOpacity:0.0f];
-	
-	[self.alertContentView.layer setOpacity:0.0f];
-	
-	[UIView animateWithDuration:0.2f animations:^{
-		[self.layer setOpacity:1.0f];
-		[self.alertContentView.layer setOpacity:1.0f];
-	} completion: nil];
+    self.alertContentView.transform = CGAffineTransformMakeScale(0.9f, 0.9f);
+    
+    [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
+        [self.layer setOpacity:1.0f];
+        self.alertContentView.transform = CGAffineTransformIdentity;
+    } completion:nil];
 }
 
 - (void) hide {
 	
-	[UIView animateWithDuration:0.1f animations:^{
+	[UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
 		[self.layer setOpacity:0.0f];
-	}                completion:^(BOOL finished) {
+	} completion:^(BOOL finished) {
 		[self removeFromSuperview];
 	}];
 	
@@ -224,8 +261,6 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 		
 		UIView *view = nil;
 		CGRect frame = CGRectMake(xPos, yPos, self.alertViewWidth, self.alertViewHeight);
-		
-        NSLog(@"frame : %@", NSStringFromCGRect(frame));
         
 		if (self.alertViewContentBackgroundType == ITSAlertViewContentBackgroundTypeSolid) {
 			
@@ -396,31 +431,13 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 	return button;
 }
 
-//- (void)setHeaderTitle:(NSString *)headerTitle {
-//	
-//	_headerTitle = headerTitle;
-//	
-//	[self.headerTitleLabel setText:headerTitle];
-//	
-//	if (nil == [self.headerTitleLabel superview]) {
-//		
-//		[self.popContentView addSubview:self.headerTitleLabel];
-//		
-//		UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.headerTitleLabel.frame) + 0.5f + kPadding, self.alertViewWidth, 0.5f)];
-//		line.backgroundColor = [UIColor colorWithWhite:0.90f alpha:1.0f];
-//		[self.popContentView addSubview:line];
-//	}
-//	
-//	[self layoutSubviews];
-//}
-
 - (UILabel *) headerTitleLabel {
 	
 	if (!_headerTitleLabel) {
 		_headerTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(kPadding, kPadding, self.alertViewWidth - (2 * kPadding), 56.0f)];
         _headerTitleLabel.numberOfLines = 3;
+        _headerTitleLabel.font = [ITSAlertViewBrandingManager sharedManager].titleFont;
 		[_headerTitleLabel setTextColor:[UIColor darkTextColor]];
-		[_headerTitleLabel setFont:[UIFont systemFontOfSize:20.0f]];
 		[_headerTitleLabel setTextAlignment:[ITSAlertViewBrandingManager sharedManager].headerTitleTextAlignment];
         _headerTitleLabel.text = _headerTitle;
         [_headerTitleLabel sizeToFit];
@@ -435,7 +452,7 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
         _subTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(kPadding, 0, self.alertViewWidth - (2 * kPadding), 56.0f)];
         _subTitleLabel.numberOfLines = 3;
         [_subTitleLabel setTextColor:[UIColor darkTextColor]];
-        [_subTitleLabel setFont:[UIFont systemFontOfSize:12.0f]];
+        _subTitleLabel.font = [ITSAlertViewBrandingManager sharedManager].subTitleFont;
         [_subTitleLabel setTextAlignment:[ITSAlertViewBrandingManager sharedManager].headerSubTitleTextAlignment];
         _subTitleLabel.text = _subTitle;
         [_subTitleLabel sizeToFit];
@@ -443,16 +460,6 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
     
     return _subTitleLabel;
 }
-
-//- (UIView *) horizontalSeperatorLine {
-//    
-//    if (!_horizontalSeperatorLine) {
-//        _horizontalSeperatorLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.alertViewWidth, 0.5f)];
-//        _horizontalSeperatorLine.backgroundColor = [UIColor colorWithWhite:0.90f alpha:1.0f];
-//    }
-//    
-//    return _horizontalSeperatorLine;
-//}
 
 - (CGRect) horizontalSeperatorLineFrame {
     return CGRectMake(0, 0, self.alertViewWidth, 0.5f);
@@ -489,7 +496,7 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
         
         [self addButtonsToView:_buttonArea];
 	}
-    _buttonArea.backgroundColor = [UIColor yellowColor];
+
 	return _buttonArea;
 }
 
@@ -551,15 +558,20 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
     if ((_contentView && [_contentView isKindOfClass:[UILabel class]]) ||
         ( _contentView && CGRectGetMinX(_contentView.frame) == (kPadding +CGRectGetMaxY([self headerView].frame)))) {
         return _contentView;
-    } else if (_contentView && CGRectGetMinY(_contentView.frame) != CGRectGetMaxY([self headerView].frame)) {
-        _contentView.frame = CGRectOffset(_contentView.frame, 0, CGRectGetMaxY([self headerView].frame));
+    } else if (_contentView ) {
+        return _contentView;
     }
+    
+    if (_contentView) {
+        NSLog(@".... %f %f", CGRectGetMinY(_contentView.frame),CGRectGetMaxY([self headerView].frame));
+    }
+    
+    CGRect contentViewFrame = CGRectMake(0, 0, self.alertViewWidth, [self permittedContentViewHeight]);
     
     if (self.bodyText) {
         
-        CGRect contentViewFrame = CGRectMake(0, CGRectGetHeight(self.headerView.frame), self.alertViewWidth, [self permittedContentViewHeight]);
-        
         UILabel *bodyTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(kPadding, kPadding, self.alertViewWidth - (2*kPadding), 20.0f)];
+        bodyTextLabel.font = [ITSAlertViewBrandingManager sharedManager].bodyFont;
         bodyTextLabel.text = _bodyText;
         [bodyTextLabel sizeToFit];
         
@@ -570,9 +582,31 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
         }
         
         _contentView = [[UIView alloc] initWithFrame:contentViewFrame];
-        _contentView.backgroundColor = [UIColor greenColor];
         [_contentView addSubview: bodyTextLabel];
         
+    } else if (self.tableView) {
+        
+        CGFloat contentHeight = self.tableView.contentSize.height;
+        
+        if ([self permittedContentViewHeight] < contentHeight) {
+            
+            // Content of the screen is more than permitted height, restrict the view height and make the content scrollable if possible
+            contentViewFrame = CGRectMake(0, CGRectGetHeight([self headerView].frame), self.alertViewWidth, [self permittedContentViewHeight]);
+            
+            self.tableView.scrollEnabled = YES;
+
+        } else {
+            
+            contentViewFrame = CGRectMake(0, CGRectGetHeight([self headerView].frame), self.alertViewWidth, contentHeight);
+            
+            self.tableView.scrollEnabled = NO;
+        }
+        
+        self.tableView.frame = CGRectMake(0, 0, self.alertViewWidth, CGRectGetHeight(contentViewFrame) );
+        
+        _contentView = [[UIView alloc] initWithFrame:contentViewFrame];
+
+        [_contentView addSubview:_tableView];
     }
     
     return _contentView;
@@ -590,7 +624,6 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 
 - (CGFloat) alertViewHeight {
     
-    NSLog(@"())()(: %f", CGRectGetHeight([self contentView].frame) );
     return CGRectGetHeight(self.headerView.frame) + CGRectGetHeight([self contentView].frame) + CGRectGetHeight([self footerViewFrame]);
 }
 

@@ -7,30 +7,30 @@
 //
 
 #import "ViewController.h"
-#import "ITSAlertView.h"
+#import "ITSAlertViewLauncher.h"
+#import <UIKit/UIKit.h>
 
 @interface ViewController ()
-
+@property (nonatomic, strong) NSArray *array;
 @end
 
 @implementation ViewController
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+    
+    if (!_array) {
+        _array = [NSArray arrayWithObjects:@"Violet", @"Indiglo", @"Blue", @"Green", @"Yellow", @"Orange", @"Red", nil];
+    }
 }
 
 - (IBAction)showPopUpClicked:(id)sender {
 	
-//    ITSAlertView *alertView = [ITSAlertView initWithTitle:@"Wish to upgrade?" headerImage:nil description:@"Upgrading to latest version protects you from vulnerabilities" buttonTitles:@[@"Cancel"] negativeButtonIndex:0 buttonPressedBlock:^(NSInteger buttonIndex) {
-//        NSLog(@"Hello");
-//    } attachToView:nil alertContentBackgroundType:ITSAlertViewContentBackgroundTypeSolid];
-	
-    ITSAlertView *alertView = [[ITSAlertView alloc] initWithTitle:@"Wish to upgrade?" subtitle:@"Upgrading to latest version protects your phone from vulnerabilities" headerImage:nil description:@"Description" buttonTitles:@[@"Cancel"] negativeButtonIndex:0 buttonPressedBlock:^(NSInteger buttonIndex) {
-        NSLog(@"Hello");
-    } attachToView:nil alertContentBackgroundType:ITSAlertViewContentBackgroundTypeSolid];
+    ITSAlertViewLauncher *alertViewLauncher = [[ITSAlertViewLauncher alloc] initMultiSelectWithOptions:self.array selectedOptionsBlock:^(NSArray *selectedOptions) {
+        NSLog(@"%lu", (unsigned long)selectedOptions.count);
+    }];
     
-	[alertView show];
+    [alertViewLauncher show];
 }
 
 @end
