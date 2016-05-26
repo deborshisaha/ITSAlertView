@@ -37,6 +37,13 @@ static NSDictionary *alertViewBrandingDictionary = nil;
 @synthesize headerSubTitleTextAlignment = _headerSubTitleTextAlignment;
 @synthesize headerPadding = _headerPadding;
 
+// Fonts
+@synthesize titleFont = _titleFont;
+@synthesize subTitleFont = _subTitleFont;
+@synthesize buttonRegularFont = _buttonRegularFont;
+@synthesize buttonBoldFont = _buttonBoldFont;
+@synthesize bodyFont = _bodyFont;
+
 @synthesize flexibleHeight = _flexibleHeight;
 
 + (instancetype) sharedManager {
@@ -157,6 +164,46 @@ static NSDictionary *alertViewBrandingDictionary = nil;
 
 - (CGFloat) maximumWidth {
 	return kMaximumWidth;
+}
+
+- (void) setSubTitleFont:(UIFont *) stf {
+    _subTitleFont = stf;
+}
+
+- (void) setTitleFont:(UIFont *) tf {
+    _titleFont = tf;
+}
+
+- (void) setButtonBoldFont:(UIFont *)buttonBoldFont {
+    _buttonBoldFont = buttonBoldFont;
+}
+
+- (void) setButtonRegularFont:(UIFont *)buttonRegularFont {
+    _buttonRegularFont = buttonRegularFont;
+}
+
+- (void) setBodyFont:(UIFont *)bodyFont {
+    _bodyFont = bodyFont;
+}
+
+- (UIFont *) titleFont {
+    return (_titleFont ? _titleFont: [UIFont systemFontOfSize:16.0f]);
+}
+
+- (UIFont *) subTitleFont {
+    return (_subTitleFont ? _subTitleFont: [UIFont systemFontOfSize:12.0f]);
+}
+
+- (UIFont *) buttonBoldFont {
+    return (_buttonBoldFont ? _buttonBoldFont: [UIFont boldSystemFontOfSize:14.0f]);
+}
+
+- (UIFont *) buttonRegularFont {
+    return (_buttonRegularFont ? _buttonRegularFont: [UIFont systemFontOfSize:14.0f]);
+}
+
+- (UIFont *) bodyFont {
+    return (_bodyFont ? _bodyFont: [UIFont systemFontOfSize:14.0f]);
 }
 
 @end

@@ -4,79 +4,90 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ITSAlertView.h"
+#import "ITSCoreAlertView.h"
 
 @interface ITSAlertViewBrandingManager : NSObject
 
-//// AlertView view maximumWidth
+////  view maximumWidth
 //@property (nonatomic, readonly) CGFloat maximumWidth;
 //
-//// AlertView view maximumHeight
+////  view maximumHeight
 //@property (nonatomic, readonly) CGFloat maximumHeight;
 
-// AlertView view width
+//  view width
 @property (nonatomic, readonly) CGFloat width;
 
-// AlertView view height
+//  view height
 @property (nonatomic, readonly) CGFloat height;
 
-// AlertView cornerRadius
+//  cornerRadius
 @property (nonatomic, readonly) CGFloat cornerRadius;
 
-// AlertView backgroundOpacityAlpha
+//  backgroundOpacityAlpha
 @property (nonatomic, readonly) CGFloat backgroundOpacityAlpha;
 
-// AlertView backgroundOpacityColor
+//  backgroundOpacityColor
 @property (nonatomic, readonly) UIColor *backgroundOpacityColor;
 
-// AlertView contentBackgroundGlossyTintColor
+//  contentBackgroundGlossyTintColor
 @property (nonatomic, readonly) UIColor *contentBackgroundGlossyTintColor;
 
-// AlertView contentBackgroundSolidColor
+//  contentBackgroundSolidColor
 @property (nonatomic, readonly) UIColor *contentBackgroundSolidColor;
 
-// AlertView dismissOnTapOutside
+//  dismissOnTapOutside
 @property (nonatomic, readonly) BOOL dismissOnTapOutside;
 
-// AlertView buttonDefaultBackgroundColor
+//  buttonDefaultBackgroundColor
 @property (nonatomic, readonly) UIColor *buttonDefaultBackgroundColor;
 
-// AlertView buttonNegativeBackgroundColor
+//  buttonNegativeBackgroundColor
 @property (nonatomic, readonly) UIColor *buttonNegativeBackgroundColor;
 
-// AlertView buttonDefaultTitleColor
+//  buttonDefaultTitleColor
 @property (nonatomic, readonly) UIColor *buttonDefaultTitleColor;
 
-// AlertView buttonNegativeTitleColor
+//  buttonNegativeTitleColor
 @property (nonatomic, readonly) UIColor *buttonNegativeTitleColor;
 
-// AlertView buttonDefaultOnPressBackgroundColor
+//  buttonDefaultOnPressBackgroundColor
 @property (nonatomic, readonly) UIColor *buttonDefaultOnPressBackgroundColor;
 
-// AlertView buttonNegativeOnPressBackgroundColor
+//  buttonNegativeOnPressBackgroundColor
 @property (nonatomic, readonly) UIColor *buttonNegativeOnPressBackgroundColor;
 
-// AlertView buttonDefaultOnPressTitleColor
+//  buttonDefaultOnPressTitleColor
 @property (nonatomic, readonly) UIColor *buttonDefaultOnPressTitleColor;
 
-// AlertView buttonNegativeOnPressTitleColor
+//  buttonNegativeOnPressTitleColor
 @property (nonatomic, readonly) UIColor *buttonNegativeOnPressTitleColor;
 
-// AlertView buttonDefaultBold
+//  buttonDefaultBold
 @property (nonatomic, readonly) BOOL buttonDefaultBold;
 
-// AlertView buttonNegativeBold
+//  buttonNegativeBold
 @property (nonatomic, readonly) BOOL buttonNegativeBold;
 
-// AlertView flexibleHeight
+//  flexibleHeight
 @property (nonatomic, readonly) BOOL flexibleHeight;
 
-// AlertView headerTitleTextAlignment
+//  headerTitleTextAlignment
 @property (nonatomic, readonly) NSTextAlignment headerTitleTextAlignment;
 
 @property (nonatomic, readonly) NSTextAlignment headerSubTitleTextAlignment;
 
 @property (nonatomic, readonly) CGFloat headerPadding;
+
+//----------
+@property (nonatomic, strong) UIFont *titleFont;
+
+@property (nonatomic, strong) UIFont *subTitleFont;
+
+@property (nonatomic, strong) UIFont *buttonRegularFont;
+
+@property (nonatomic, strong) UIFont *buttonBoldFont;
+
+@property (nonatomic, strong) UIFont *bodyFont;
 
 + (instancetype) sharedManager;
 + (void) initializeWithBrandingFile: (NSString *) fileName andBundle: (NSBundle *) bundle;

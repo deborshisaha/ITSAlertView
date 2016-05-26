@@ -1,6 +1,6 @@
 //
-//  ITSAlertView.h
-//  ITSAlertView
+//  ITSCoreAlertView.h
+//  ITSCoreAlertView
 //
 
 #import <UIKit/UIKit.h>
@@ -16,7 +16,7 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewContentBackgroundType) {
 	ITSAlertViewContentBackgroundTypeSolid = 2,
 };
 
-@interface ITSAlertView : UIView
+@interface ITSCoreAlertView : UIView
 
 // Pop-up view maximumWidth (constant)
 
@@ -110,7 +110,7 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewContentBackgroundType) {
 - (instancetype) initWithTitle: (NSString *) title
                       subtitle: (NSString *) subtitle
                    headerImage: (UIImage *) headerImage
-           embeddedContentView: (UIView *) embeddedContentView
+                     tableView: (UITableView *) tableView
                   buttonTitles: (NSArray *) arrayOfButtonTitles
            negativeButtonIndex: (NSInteger) negativeButtonIndex
             buttonPressedBlock: (void (^)(NSInteger buttonIndex))buttonPressedBlock
