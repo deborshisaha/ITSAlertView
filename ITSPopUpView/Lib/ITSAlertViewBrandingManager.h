@@ -107,6 +107,11 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewContentBackgroundType) {
 + (instancetype) sharedManager;
 + (void) initializeWithBrandingFile: (NSString *) fileName andBundle: (NSBundle *) bundle type:(NSString *)type;
 
-- (void) rebrandUsingFile: (NSString *) fileName andBundle: (NSBundle *) bundle type:(NSString *)type;
+- (void) rebrandUsingPlistFile: (NSString *) fileName andBundle: (NSBundle *) bundle;
+- (void) rebrandUsingJSONFile: (NSString *) fileName andBundle: (NSBundle *) bundle;
+
+// Loads from Main bundle
+- (void) rebrandUsingPlistFile: (NSString *) fileName;
+- (void) rebrandUsingJSONFile: (NSString *) fileName;
 
 @end

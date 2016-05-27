@@ -73,6 +73,22 @@ static NSDictionary *alertViewBrandingDictionary = nil;
     [[ITSAlertViewBrandingManager sharedManager] rebrandUsingFile:fileName andBundle:bundle type:type];
 }
 
+- (void) rebrandUsingPlistFile: (NSString *) fileName andBundle: (NSBundle *) bundle {
+    [self rebrandUsingFile:fileName andBundle:bundle type:@"json"];
+}
+
+- (void) rebrandUsingJSONFile: (NSString *) fileName andBundle: (NSBundle *) bundle {
+    [self rebrandUsingFile:fileName andBundle:bundle type:@"plist"];
+}
+
+- (void) rebrandUsingJSONFile: (NSString *) fileName {
+    [self rebrandUsingJSONFile:fileName andBundle:[NSBundle mainBundle]];
+}
+
+- (void) rebrandUsingPlistFile: (NSString *) fileName {
+    [self rebrandUsingPlistFile:fileName andBundle:[NSBundle mainBundle]];
+}
+
 - (void) rebrandUsingFile: (NSString *) fileName andBundle: (NSBundle *) bundle type:(NSString *)type {
     
     alertViewBrandingDictionary = [NSDictionary dictionaryWithContentsOfFile:[bundle pathForResource:fileName ofType:type]];
