@@ -124,23 +124,23 @@
 }
 
 - (void) loadItsOnTheme {
-    [[ITSAlertViewBrandingManager sharedManager] rebrandUsingFile:@"ITSItsOnTheme" andBundle:[NSBundle mainBundle] type:@"plist"];
+    [[ITSAlertViewBrandingManager sharedManager] rebrandUsingPlistFile:@"ITSItsOnTheme"];
 }
 
 - (void) loadTelefonicaTheme {
-    [[ITSAlertViewBrandingManager sharedManager] rebrandUsingFile:@"ITSTelefonicaTheme" andBundle:[NSBundle mainBundle] type:@"plist"];
+	[[ITSAlertViewBrandingManager sharedManager] rebrandUsingPlistFile:@"ITSTelefonicaTheme"];
 }
 
 - (void) loadMTNTheme {
-    [[ITSAlertViewBrandingManager sharedManager] rebrandUsingFile:@"ITSMTNTheme" andBundle:[NSBundle mainBundle] type:@"plist"];
+	[[ITSAlertViewBrandingManager sharedManager] rebrandUsingPlistFile:@"ITSMTNTheme"];
 }
 
 - (void) loadSprintTheme {
-    [[ITSAlertViewBrandingManager sharedManager] rebrandUsingFile:@"ITSSprintTheme" andBundle:[NSBundle mainBundle] type:@"plist"];
+	[[ITSAlertViewBrandingManager sharedManager] rebrandUsingPlistFile:@"ITSSprintTheme"];
 }
 
 - (void) loadSapphireTheme {
-    [[ITSAlertViewBrandingManager sharedManager] rebrandUsingFile:@"ITSSapphireTheme" andBundle:[NSBundle mainBundle] type:@"plist"];
+	[[ITSAlertViewBrandingManager sharedManager] rebrandUsingPlistFile:@"ITSSapphireTheme"];
 }
 
 - (void) rowInSection0Selected: (NSInteger) row {
