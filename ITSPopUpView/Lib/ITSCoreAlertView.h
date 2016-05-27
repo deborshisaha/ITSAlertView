@@ -11,11 +11,6 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewBackgroundType) {
     ITSAlertViewBackgroundTypeTransparent = 3,
 };
 
-typedef NS_ENUM(NSUInteger, ITSAlertViewContentBackgroundType) {
-	ITSAlertViewContentBackgroundTypeBlur = 1,
-	ITSAlertViewContentBackgroundTypeSolid = 2,
-};
-
 @interface ITSCoreAlertView : UIView
 
 // Pop-up view maximumWidth (constant)
@@ -103,9 +98,9 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewContentBackgroundType) {
                    description: (NSString *) description
                   buttonTitles: (NSArray *) arrayOfButtonTitles
            negativeButtonIndex: (NSInteger) negativeButtonIndex
-            buttonPressedBlock: (void (^)(NSInteger buttonIndex))buttonPressedBlock
-                  attachToView: (UIView *) view
-    alertContentBackgroundType: (ITSAlertViewContentBackgroundType)alertViewContentBackgroundType;
+                 positiveButtonIndex: (NSInteger) positiveButtonIndex
+                        hidden: (void (^)(void)) hiddenCompletionBlock
+            buttonPressedBlock: (void (^)(NSInteger buttonIndex))buttonPressedBlock;
 
 - (instancetype) initWithTitle: (NSString *) title
                       subtitle: (NSString *) subtitle
@@ -113,9 +108,9 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewContentBackgroundType) {
                      tableView: (UITableView *) tableView
                   buttonTitles: (NSArray *) arrayOfButtonTitles
            negativeButtonIndex: (NSInteger) negativeButtonIndex
-            buttonPressedBlock: (void (^)(NSInteger buttonIndex))buttonPressedBlock
-                  attachToView: (UIView *) view
-    alertContentBackgroundType: (ITSAlertViewContentBackgroundType)alertViewContentBackgroundType;
+                 positiveButtonIndex: (NSInteger) positiveButtonIndex
+                        hidden: (void (^)(void)) hiddenCompletionBlock
+            buttonPressedBlock: (void (^)(NSInteger buttonIndex))buttonPressedBlock;
 
 - (void) show;
 

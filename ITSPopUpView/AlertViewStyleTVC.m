@@ -1,0 +1,230 @@
+//
+//  AlertViewStyleTVC.m
+//  ITSPopUpView
+//
+//  Created by Deborshi Saha on 5/23/16.
+//  Copyright © 2016 Semicolon Design. All rights reserved.
+//
+
+#import "AlertViewStyleTVC.h"
+#import "ITSAlert.h"
+
+// Demo purpose only
+#import "ITSAlertViewBrandingManager.h"
+
+#import <UIKit/UIKit.h>
+
+@interface AlertViewStyleTVC ()
+@property (nonatomic, strong) NSArray *array;
+@property (nonatomic, strong) NSArray *stylesArray;
+@property (nonatomic, strong) NSArray *customerThemesArray;
+@property (nonatomic, strong) NSArray *inHouseThemesArray;
+@end
+
+@implementation AlertViewStyleTVC
+
+- (void)viewDidLoad {
+	[super viewDidLoad];
+    
+    if (!_stylesArray) {
+        _stylesArray = [NSArray arrayWithObjects:@"Multiple Select", @"Single Select", @"Multiple Select with limit", @"Simple Alert", @"Notification Alert", nil];
+    }
+    
+    if (!_customerThemesArray) {
+        _customerThemesArray = [NSArray arrayWithObjects:@"ItsOn", @"Telefonica", @"MTN", @"Sprint", @"Sapphire", nil];
+    }
+    
+    if (!_inHouseThemesArray) {
+        _inHouseThemesArray = [NSArray arrayWithObjects:@"Summer", @"Fall", @"Winter", @"Spring", nil];
+    }
+    
+    if (!_array) {
+        _array = [NSArray arrayWithObjects:_stylesArray, _customerThemesArray, nil];
+    }
+}
+
+- (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
+    return self.array.count;
+}
+
+- (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    
+    if (self.array.count > section) {
+        return ((NSArray *)self.array[section]).count;
+    }
+    
+    return 0;
+}
+
+- (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    NSArray *arr = nil;
+    
+    if (self.array.count > indexPath.section) {
+        arr = ((NSArray *)self.array[indexPath.section]);
+    }
+    
+    if (arr.count < indexPath.row) {
+        return nil;
+    }
+    
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
+    cell.textLabel.text = arr[indexPath.row];
+    cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+    return cell;
+}
+
+- (NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    
+    if (section == 0) {
+        return @"Styles";
+    } else if (section == 1) {
+        return @"Customer themes";
+    } else {
+        return @"In-house themes";
+    }
+}
+
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    switch (indexPath.section) {
+        case 0:
+            [self rowInSection0Selected: indexPath.row];
+            break;
+        case 1:
+            [self rowInSection1Selected: indexPath.row];
+            break;
+        default:
+            break;
+    }
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+- (void) rowInSection1Selected: (NSInteger) row {
+    switch (row) {
+        case 0:
+            [self loadItsOnTheme];
+            break;
+        case 1:
+            [self loadTelefonicaTheme];
+            break;
+        case 2:
+            [self loadMTNTheme];
+            break;
+        case 3:
+            [self loadSprintTheme];
+            break;
+        case 4:
+            [self loadSapphireTheme];
+            break;
+        default:
+            break;
+    }
+}
+
+- (void) loadItsOnTheme {
+    [[ITSAlertViewBrandingManager sharedManager] rebrandUsingFile:@"ITSItsOnTheme" andBundle:[NSBundle mainBundle] type:@"plist"];
+}
+
+- (void) loadTelefonicaTheme {
+    [[ITSAlertViewBrandingManager sharedManager] rebrandUsingFile:@"ITSTelefonicaTheme" andBundle:[NSBundle mainBundle] type:@"plist"];
+}
+
+- (void) loadMTNTheme {
+    [[ITSAlertViewBrandingManager sharedManager] rebrandUsingFile:@"ITSMTNTheme" andBundle:[NSBundle mainBundle] type:@"plist"];
+}
+
+- (void) loadSprintTheme {
+    [[ITSAlertViewBrandingManager sharedManager] rebrandUsingFile:@"ITSSprintTheme" andBundle:[NSBundle mainBundle] type:@"plist"];
+}
+
+- (void) loadSapphireTheme {
+    [[ITSAlertViewBrandingManager sharedManager] rebrandUsingFile:@"ITSSapphireTheme" andBundle:[NSBundle mainBundle] type:@"plist"];
+}
+
+- (void) rowInSection0Selected: (NSInteger) row {
+    
+    switch (row) {
+        case 0:
+            [self multipleOptionsAlertClicked];
+            break;
+        case 1:
+            [self singleSelectAlertClicked];
+            break;
+        case 2:
+            [self multipleOptionsWithLimitAlertClicked];
+            break;
+        case 3:
+            [self simpleAlertClicked];
+            break;
+        case 4:
+            [self notificationAlertClicked];
+            break;
+        default:
+            break;
+    }
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 48.0f;
+}
+
+- (void) notificationAlertClicked {
+    
+    ITSAlert *notificationAlert = [[ITSAlert alloc] initNotificationAlertWithTitle:@"You will run today" andMessage:@"Running is good for health" buttonTitle:@"Okay" buttonBlock:nil];
+    [notificationAlert show];
+}
+
+- (void) multipleOptionsAlertClicked {
+    
+    NSArray *multiSelectOptionsArray = [NSArray arrayWithObjects:@"Green", @"Yellow", @"Red", nil];
+    
+    ITSAlert *alertViewLauncher = [[ITSAlert alloc] initMultiSelectWithOptions:multiSelectOptionsArray withTitle:@"Which is your favorite color?" andDescription:@"Knowing your favorite color makes this world a better place!! Not really..." selectedOptionsBlock:^(NSArray *objects) {
+        NSLog(@"%lu", (unsigned long)objects.count);
+    } selectionLimit:multiSelectOptionsArray.count];
+    
+    [alertViewLauncher show];
+}
+
+
+- (void) singleSelectAlertClicked {
+    
+    NSArray *singleSelectOptionsArray = [NSArray arrayWithObjects:@"Green", @"Yellow", @"Red", nil];
+    
+    ITSAlert *singleSelectAlert = [[ITSAlert alloc] initSingleSelectWithOptions:singleSelectOptionsArray withTitle:@"Which is your favorite color?" andDescription:@"Knowing your favorite color makes this world a better place!! Not really..." selectedOptionsBlock:^(id selectedObject) {
+        
+        if ([selectedObject isKindOfClass:[NSString class]]) {
+            NSLog(@"Selected option %@", (NSString *) selectedObject);
+        }
+    }];
+    
+    [singleSelectAlert show];
+}
+
+
+- (void) multipleOptionsWithLimitAlertClicked {
+    
+    NSArray *multiSelectOptionsArray = [NSArray arrayWithObjects:@"Green", @"Yellow", @"Red", nil];
+    
+    ITSAlert *alertViewLauncher = [[ITSAlert alloc] initMultiSelectWithOptions:multiSelectOptionsArray withTitle:@"Which is your favorite color?" andDescription:@"Knowing your favorite color makes this world a better place!! Not really..." selectedOptionsBlock:^(NSArray *objects) {
+        NSLog(@"%lu", (unsigned long)objects.count);
+    } selectionLimit:2];
+    
+    [alertViewLauncher show];
+}
+
+
+
+- (void) simpleAlertClicked {
+    
+    ITSAlert *simpleAlert = [[ITSAlert alloc] initSimpleAlertWithTitle:@"You are awesome!" andMessage:@"A man cannot be comfortable without his own approval" positiveTitle:@"Thanks!" negativeTitle:@"Cancel" positiveBlock:^{
+        NSLog(@"Done clicked!!");
+    } negativeBlock:^{
+        NSLog(@"Cancel clicked!!");
+    }];
+    
+    [simpleAlert show];
+}
+
+@end

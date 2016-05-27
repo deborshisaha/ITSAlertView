@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  AlertViewStyleTVC.h
 //  ITSPopUpView
 //
 //  Created by Deborshi Saha on 5/23/16.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface AlertViewStyleTVC : UITableViewController
 
 @end
 

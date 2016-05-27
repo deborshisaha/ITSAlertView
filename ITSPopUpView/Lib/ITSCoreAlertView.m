@@ -21,7 +21,6 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 @property(nonatomic, strong) UIView *alertContentView;
 @property(nonatomic, weak) UIView *parentView;
 @property(nonatomic, assign) BOOL backgroundBlur;
-@property(nonatomic, assign) ITSAlertViewContentBackgroundType alertViewContentBackgroundType;
 
 // Main sections
 @property(nonatomic, strong) UIView *buttonArea;
@@ -33,6 +32,7 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 
 @property(nonatomic, strong) NSArray *buttonTitles;
 @property(nonatomic, copy) void (^buttonPressedBlock)(NSInteger btnIdx);
+@property(nonatomic, copy) void (^hiddenCompletionBlock)(void);
 
 @property(nonatomic, strong) NSString *headerTitle;
 @property(nonatomic, strong) NSString *subTitle;
@@ -47,52 +47,11 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 
 @property(nonatomic, assign) ITSAlertViewHeaderType alertViewHeaderType;
 @property(nonatomic, assign) NSInteger negativeButtonIndex;
+@property(nonatomic, assign) NSInteger positiveButtonIndex;
 
 @end
 
 @implementation ITSCoreAlertView
-
-//+ (instancetype) initWithTitle: (NSString *) title
-//				   description: (NSString *) description
-//				  buttonTitles: (NSArray *) arrayOfButtonTitles
-//		   negativeButtonIndex: (NSInteger) negativeButtonIndex
-//			buttonPressedBlock: (void (^)(NSInteger buttonIndex))buttonPressedBlock
-//				  attachToView: (UIView *) view
-//	alertContentBackgroundType: (ITSAlertViewContentBackgroundType)alertViewContentBackgroundType {
-//	
-//
-//	view = (nil == view) ? [UIApplication sharedApplication].keyWindow : view;
-//	
-//	ITSAlertView *popUpView = [[ITSAlertView alloc] initPopUpViewInView:view alertContentBackgroundType:alertViewContentBackgroundType];
-//	
-//	[popUpView addButtonWithTitles: arrayOfButtonTitles negativeButtonIndex: negativeButtonIndex];
-//	
-//	[popUpView setHeaderTitle:title];
-//	
-//	[popUpView setButtonPressedBlock:buttonPressedBlock];
-//	
-//	[view addSubview:popUpView];
-//	 
-//	return popUpView;
-//}
-
-//+ (instancetype) initWithTitle: (NSString *) title
-//                   headerImage: (UIImage *) headerImage
-//                   description: (NSString *) description
-//                  buttonTitles: (NSArray *) arrayOfButtonTitles
-//           negativeButtonIndex: (NSInteger) negativeButtonIndex
-//            buttonPressedBlock: (void (^)(NSInteger buttonIndex))buttonPressedBlock
-//                  attachToView: (UIView *) view
-//    alertContentBackgroundType: (ITSAlertViewContentBackgroundType)alertViewContentBackgroundType {
-//    
-//    view = (nil == view) ? [UIApplication sharedApplication].keyWindow : view;
-//    
-//    ITSAlertView *alertView = [[ITSAlertView alloc] initWithTitle:title subtitle:@"This is good" headerImage:headerImage description:description buttonTitles:arrayOfButtonTitles negativeButtonIndex:negativeButtonIndex buttonPressedBlock:buttonPressedBlock attachToView: view alertContentBackgroundType:alertViewContentBackgroundType];
-//    
-//    // [view addSubview:alertView];
-//    
-//    return alertView;
-//}
 
 - (instancetype) initWithTitle: (NSString *) title
                       subtitle: (NSString *) subtitle
@@ -100,25 +59,24 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
                    description: (NSString *) description
                   buttonTitles: (NSArray *) arrayOfButtonTitles
            negativeButtonIndex: (NSInteger) negativeButtonIndex
-            buttonPressedBlock: (void (^)(NSInteger buttonIndex))buttonPressedBlock
-                  attachToView: (UIView *) view
-    alertContentBackgroundType: (ITSAlertViewContentBackgroundType)alertViewContentBackgroundType {
+                 positiveButtonIndex: (NSInteger) positiveButtonIndex
+                        hidden:(void (^)(void))hiddenCompletionBlock
+            buttonPressedBlock: (void (^)(NSInteger buttonIndex))buttonPressedBlock {
     
-    view = (nil == view) ? [UIApplication sharedApplication].keyWindow : view;
-    
-    self = [super initWithFrame:view.bounds];
+    self = [super initWithFrame:[UIApplication sharedApplication].keyWindow.bounds];
     
     if (self) {
-        _parentView = view;
+        _parentView = [UIApplication sharedApplication].keyWindow;
         _headerTitle = title;
         _subTitle = subtitle;
         _headerImage = headerImage;
         _bodyText = description;
         _buttonTitles = [NSArray arrayWithArray:arrayOfButtonTitles];
         _negativeButtonIndex = negativeButtonIndex;
+        _positiveButtonIndex = positiveButtonIndex;;
         _buttonPressedBlock = buttonPressedBlock;
-        _alertViewContentBackgroundType = alertViewContentBackgroundType;
         _alertViewHeaderType = ITSAlertViewHeaderTypeTitle;
+        _hiddenCompletionBlock = hiddenCompletionBlock;
         
         if (headerImage && title) {
             _alertViewHeaderType = ITSAlertViewHeaderTypeImageTitle;
@@ -149,25 +107,24 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
                      tableView: (UITableView *) tableView
                   buttonTitles: (NSArray *) arrayOfButtonTitles
            negativeButtonIndex: (NSInteger) negativeButtonIndex
-            buttonPressedBlock: (void (^)(NSInteger buttonIndex))buttonPressedBlock
-                  attachToView: (UIView *) view
-    alertContentBackgroundType: (ITSAlertViewContentBackgroundType)alertViewContentBackgroundType {
+           positiveButtonIndex: (NSInteger) positiveButtonIndex
+                        hidden: (void (^)(void))hiddenCompletionBlock
+            buttonPressedBlock: (void (^)(NSInteger buttonIndex))buttonPressedBlock {
     
-    view = (nil == view) ? [UIApplication sharedApplication].keyWindow : view;
-    
-    self = [super initWithFrame:view.bounds];
+    self = [super initWithFrame:[UIApplication sharedApplication].keyWindow.bounds];
     
     if (self) {
-        _parentView = view;
+        _parentView = [UIApplication sharedApplication].keyWindow;
         _headerTitle = title;
         _subTitle = subtitle;
         _headerImage = headerImage;
         _tableView = tableView;
         _buttonTitles = [NSArray arrayWithArray:arrayOfButtonTitles];
         _negativeButtonIndex = negativeButtonIndex;
+        _positiveButtonIndex = positiveButtonIndex;
         _buttonPressedBlock = buttonPressedBlock;
-        _alertViewContentBackgroundType = alertViewContentBackgroundType;
         _alertViewHeaderType = ITSAlertViewHeaderTypeTitle;
+        _hiddenCompletionBlock = hiddenCompletionBlock;
         
         if (headerImage && title) {
             _alertViewHeaderType = ITSAlertViewHeaderTypeImageTitle;
@@ -181,8 +138,7 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
         
         [self.alertContentView addSubview:[self headerView]];
         [self.alertContentView addSubview:[self footerView]];
-        [self.alertContentView addSubview: [self contentView]];
-        
+        [self.alertContentView addSubview:[self contentView]];
         
         [self layoutSubviews];
         
@@ -213,7 +169,6 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 {
 	
 	self.parentView = view;
-	self.alertViewContentBackgroundType = alertViewContentBackgroundType;
 	
 	self = [super initWithFrame:view.bounds];
 	if (self) {
@@ -247,14 +202,18 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 	[UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
 		[self.layer setOpacity:0.0f];
 	} completion:^(BOOL finished) {
+        
 		[self removeFromSuperview];
+        
+        ((!self.hiddenCompletionBlock)? : self.hiddenCompletionBlock());
+        
 	}];
 	
 }
 
 - (UIView *) alertContentView {
 	
-	if (nil == _alertContentView) {
+	if (!_alertContentView) {
 		
 		CGFloat xPos = ((nil != self.parentView) ? CGRectGetWidth(self.parentView.bounds) / 2 : 0) - [ITSAlertViewBrandingManager sharedManager].width / 2;
 		CGFloat yPos = ((nil != self.parentView) ? CGRectGetHeight(self.parentView.bounds) / 2 : 0) - [ITSAlertViewBrandingManager sharedManager].height / 2;
@@ -262,12 +221,12 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 		UIView *view = nil;
 		CGRect frame = CGRectMake(xPos, yPos, self.alertViewWidth, self.alertViewHeight);
         
-		if (self.alertViewContentBackgroundType == ITSAlertViewContentBackgroundTypeSolid) {
+		if ([ITSAlertViewBrandingManager sharedManager].alertViewContentBackgroundType == ITSAlertViewContentBackgroundTypeSolid) {
 			
 			view = [[UIView alloc] initWithFrame:frame];
 			[view setBackgroundColor:[ITSAlertViewBrandingManager sharedManager].contentBackgroundSolidColor];
 			
-		} else if (self.alertViewContentBackgroundType == ITSAlertViewContentBackgroundTypeBlur) {
+		} else if ([ITSAlertViewBrandingManager sharedManager].alertViewContentBackgroundType == ITSAlertViewContentBackgroundTypeGlossy) {
 			
 			UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
 			UIVisualEffectView *blurView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
@@ -283,22 +242,12 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 		
 		_alertContentView = view;
 		
+        _alertContentView.layer.borderWidth = 0.5f;
+        _alertContentView.layer.borderColor = [UIColor colorWithWhite:0.90f alpha:1.0f].CGColor;
 		view = nil;
 	}
     
 	return _alertContentView;
-}
-
-#pragma mark - Background Gesture
-- (void)tappedOnBackground:(UITapGestureRecognizer *)tapGesture {
-	
-	CGPoint location = [tapGesture locationInView:self];
-	
-	if (CGRectContainsPoint(self.alertContentView.frame, location)) {
-		return;
-	}
-	
-	[self hide];
 }
 
 - (void) setBackgroundBlur:(BOOL)backgroundBlur {
@@ -332,11 +281,6 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 	self.backgroundBlur = NO;
 	
 	[self addSubview:self.alertContentView];
-	
-	if ([ITSAlertViewBrandingManager sharedManager].dismissOnTapOutside) {
-		UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedOnBackground:)];
-		[self addGestureRecognizer:tapGesture];
-	}
 }
 
 - (void) addButtonsToView: (UIView *) view {
@@ -366,14 +310,14 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 		ITSButton *btn = nil;
 		
 		if (self.alertViewWidth == perWidth) {
-			btn = [self buttonWithTitle:title width:perWidth xPos:0 yPos:idx * 44.0f negativeButton: (idx == self.negativeButtonIndex) ];
+			btn = [self buttonWithTitle:title width:perWidth xPos:0 yPos:idx * 44.0f negativeButton: (idx == self.negativeButtonIndex) positiveButton: (idx == self.positiveButtonIndex)];
 			
 			UIView *line = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetMinX(btn.frame), CGRectGetMinY(btn.frame) - 0.5f, CGRectGetWidth(btn.frame), 0.5f)];
 			line.backgroundColor = [UIColor colorWithWhite:0.90f alpha:1.0f];
 			[view addSubview:line];
 			
 		} else {
-			btn = [self buttonWithTitle:title width:(perWidth - 0.5f) xPos:idx * (perWidth + 0.5f) yPos:0 negativeButton: (idx == self.negativeButtonIndex) ];
+			btn = [self buttonWithTitle:title width:(perWidth - 0.5f) xPos:idx * (perWidth + 0.5f) yPos:0 negativeButton: (idx == self.negativeButtonIndex) positiveButton: (idx == self.positiveButtonIndex)];
 			
 			if (idx != self.buttonTitles.count - 1) {
 				UIView *seperator = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(btn.frame)+0.5f, CGRectGetMinY(btn.frame), 0.5f, CGRectGetHeight(btn.frame))];
@@ -381,8 +325,10 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 				[view addSubview:seperator];
 			}
 		}
+        
+        btn.backgroundColor = [UIColor clearColor];
 		
-		[btn setTag:idx + 256];
+        [btn setTag:idx + 256];
 		[btn addTarget:self action:@selector(pressedOnTitleButton:) forControlEvents:UIControlEventTouchUpInside];
 		[view addSubview:btn];
 		
@@ -404,33 +350,9 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 	[self hide];
 }
 
-- (ITSButton *) buttonWithTitle:(NSString *)title width:(CGFloat)width xPos:(CGFloat)xPos yPos:(CGFloat)yPos negativeButton: (BOOL) negative {
+- (ITSButton *) buttonWithTitle:(NSString *)title width:(CGFloat)width xPos:(CGFloat)xPos yPos:(CGFloat)yPos negativeButton: (BOOL) negative positiveButton: (BOOL) positive {
 	
-	ITSButton *button = [[ITSButton alloc] initWithFrame:CGRectMake(xPos, yPos, width, 44.0f) negative:negative];
-	
-	if (negative) {
-		[button setTitleColor:[ITSAlertViewBrandingManager sharedManager].buttonNegativeTitleColor forState:UIControlStateNormal];
-		[button setBackgroundColor:[ITSAlertViewBrandingManager sharedManager].buttonNegativeBackgroundColor];
-		
-		if ([ITSAlertViewBrandingManager sharedManager].buttonNegativeBold) {
-			// Bold
-			[button.titleLabel setFont:[UIFont boldSystemFontOfSize:14.0f]];
-		} else {
-			[button.titleLabel setFont:[UIFont systemFontOfSize:14.0f]];
-		}
-		
-	} else {
-		[button setTitleColor:[ITSAlertViewBrandingManager sharedManager].buttonDefaultTitleColor forState:UIControlStateNormal];
-		[button setBackgroundColor:[ITSAlertViewBrandingManager sharedManager].buttonDefaultBackgroundColor];
-		
-		if ([ITSAlertViewBrandingManager sharedManager].buttonDefaultBold) {
-			// Bold
-			[button.titleLabel setFont:[UIFont boldSystemFontOfSize:14.0f]];
-		} else {
-			[button.titleLabel setFont:[UIFont systemFontOfSize:14.0f]];
-		}
-	}
-	
+	ITSButton *button = [[ITSButton alloc] initWithFrame:CGRectMake(xPos, yPos, width, 44.0f) negative:negative positive:positive];
 	[button setTitle:title forState:UIControlStateNormal];
 	
 	return button;
@@ -484,6 +406,7 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 - (UIView *) footerView {
     
     self.buttonArea.frame = CGRectOffset(self.buttonArea.frame, 0, self.alertViewHeight - CGRectGetHeight(self.buttonArea.frame));
+
     return self.buttonArea;
 }
 
@@ -498,6 +421,7 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 		}
 		
 		_buttonArea = [[UIView alloc] initWithFrame: [self footerViewFrame]];
+        _buttonArea.backgroundColor = [UIColor clearColor];
         
         [self addButtonsToView:_buttonArea];
 	}

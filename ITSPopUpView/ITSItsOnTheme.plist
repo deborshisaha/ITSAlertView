@@ -31,15 +31,15 @@
 			<key>positive</key>
 			<dict>
 				<key>bold</key>
-				<false/>
+				<true/>
 				<key>titleColor</key>
-				<string>#FF007A00</string>
+				<string>#FF007AFF</string>
+				<key>onPressTitleColor</key>
+				<string>#FF007AFF</string>
 				<key>backgroundColor</key>
 				<string>#FFFFFFFF</string>
-				<key>onPressTitleColor</key>
-				<string>#FFFFFFFF</string>
 				<key>onPressBackgroundColor</key>
-				<string>#FF007A00</string>
+				<string>#FFF5F5F5</string>
 			</dict>
 			<key>negative</key>
 			<dict>
@@ -52,7 +52,7 @@
 				<key>backgroundColor</key>
 				<string>#FFFF0000</string>
 				<key>onPressBackgroundColor</key>
-				<string>#E5E50000</string>
+				<string>#FFF5F5F5</string>
 			</dict>
 		</dict>
 		<key>dismissOnTapOutside</key>

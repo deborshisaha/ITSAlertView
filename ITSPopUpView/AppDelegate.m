@@ -19,8 +19,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	// Override point for customization after application launch.
 	
-	[ITSAlertViewBrandingManager initializeWithBrandingFile:@"ITSAlertViewBranding" andBundle:[NSBundle mainBundle]];
-	
+    [ITSAlertViewBrandingManager initializeWithBrandingFile:@"ITSAlertViewBranding" andBundle:[NSBundle mainBundle] type:@"plist"];
+    [ITSAlertViewBrandingManager sharedManager].buttonRegularFont = [UIFont fontWithName:@"Avenir Next" size:13.0f];
 	return YES;
 }
 

@@ -8,9 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		C2ACEB041CF67E33005E72DC /* ITSAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = C2ACEB031CF67E33005E72DC /* ITSAlert.m */; };
+		C2ACEB061CF7DE9D005E72DC /* ITSItsOnTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = C2ACEB051CF7DE9D005E72DC /* ITSItsOnTheme.plist */; };
+		C2ACEB0B1CF7E0BD005E72DC /* ITSMTNTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = C2ACEB071CF7E0BD005E72DC /* ITSMTNTheme.plist */; };
+		C2ACEB0C1CF7E0BD005E72DC /* ITSSapphireTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = C2ACEB081CF7E0BD005E72DC /* ITSSapphireTheme.plist */; };
+		C2ACEB0D1CF7E0BD005E72DC /* ITSSprintTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = C2ACEB091CF7E0BD005E72DC /* ITSSprintTheme.plist */; };
+		C2ACEB0E1CF7E0BD005E72DC /* ITSTelefonicaTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = C2ACEB0A1CF7E0BD005E72DC /* ITSTelefonicaTheme.plist */; };
 		C2D986FF1CF3BC3F00A7CBAA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D986FE1CF3BC3F00A7CBAA /* main.m */; };
 		C2D987021CF3BC3F00A7CBAA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D987011CF3BC3F00A7CBAA /* AppDelegate.m */; };
-		C2D987051CF3BC3F00A7CBAA /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D987041CF3BC3F00A7CBAA /* ViewController.m */; };
+		C2D987051CF3BC3F00A7CBAA /* AlertViewStyleTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D987041CF3BC3F00A7CBAA /* AlertViewStyleTVC.m */; };
 		C2D987081CF3BC3F00A7CBAA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C2D987061CF3BC3F00A7CBAA /* Main.storyboard */; };
 		C2D9870A1CF3BC3F00A7CBAA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C2D987091CF3BC3F00A7CBAA /* Assets.xcassets */; };
 		C2D9870D1CF3BC3F00A7CBAA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C2D9870B1CF3BC3F00A7CBAA /* LaunchScreen.storyboard */; };
@@ -24,12 +29,17 @@
 /* Begin PBXFileReference section */
 		C2ACEB021CF67E33005E72DC /* ITSAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITSAlert.h; sourceTree = "<group>"; };
 		C2ACEB031CF67E33005E72DC /* ITSAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITSAlert.m; sourceTree = "<group>"; };
+		C2ACEB051CF7DE9D005E72DC /* ITSItsOnTheme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ITSItsOnTheme.plist; sourceTree = "<group>"; };
+		C2ACEB071CF7E0BD005E72DC /* ITSMTNTheme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ITSMTNTheme.plist; sourceTree = "<group>"; };
+		C2ACEB081CF7E0BD005E72DC /* ITSSapphireTheme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ITSSapphireTheme.plist; sourceTree = "<group>"; };
+		C2ACEB091CF7E0BD005E72DC /* ITSSprintTheme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ITSSprintTheme.plist; sourceTree = "<group>"; };
+		C2ACEB0A1CF7E0BD005E72DC /* ITSTelefonicaTheme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ITSTelefonicaTheme.plist; sourceTree = "<group>"; };
 		C2D986FA1CF3BC3F00A7CBAA /* ITSAlertView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ITSAlertView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2D986FE1CF3BC3F00A7CBAA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		C2D987001CF3BC3F00A7CBAA /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		C2D987011CF3BC3F00A7CBAA /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		C2D987031CF3BC3F00A7CBAA /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		C2D987041CF3BC3F00A7CBAA /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		C2D987031CF3BC3F00A7CBAA /* AlertViewStyleTVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlertViewStyleTVC.h; sourceTree = "<group>"; };
+		C2D987041CF3BC3F00A7CBAA /* AlertViewStyleTVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlertViewStyleTVC.m; sourceTree = "<group>"; };
 		C2D987071CF3BC3F00A7CBAA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C2D987091CF3BC3F00A7CBAA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C2D9870C1CF3BC3F00A7CBAA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -78,8 +88,8 @@
 				C2D987171CF3BE3E00A7CBAA /* Lib */,
 				C2D987001CF3BC3F00A7CBAA /* AppDelegate.h */,
 				C2D987011CF3BC3F00A7CBAA /* AppDelegate.m */,
-				C2D987031CF3BC3F00A7CBAA /* ViewController.h */,
-				C2D987041CF3BC3F00A7CBAA /* ViewController.m */,
+				C2D987031CF3BC3F00A7CBAA /* AlertViewStyleTVC.h */,
+				C2D987041CF3BC3F00A7CBAA /* AlertViewStyleTVC.m */,
 				C2D987061CF3BC3F00A7CBAA /* Main.storyboard */,
 				C2D986FD1CF3BC3F00A7CBAA /* Supporting Files */,
 			);
@@ -89,6 +99,11 @@
 		C2D986FD1CF3BC3F00A7CBAA /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				C2ACEB071CF7E0BD005E72DC /* ITSMTNTheme.plist */,
+				C2ACEB081CF7E0BD005E72DC /* ITSSapphireTheme.plist */,
+				C2ACEB091CF7E0BD005E72DC /* ITSSprintTheme.plist */,
+				C2ACEB0A1CF7E0BD005E72DC /* ITSTelefonicaTheme.plist */,
+				C2ACEB051CF7DE9D005E72DC /* ITSItsOnTheme.plist */,
 				C2D987091CF3BC3F00A7CBAA /* Assets.xcassets */,
 				C2D9870B1CF3BC3F00A7CBAA /* LaunchScreen.storyboard */,
 				C2D9870E1CF3BC3F00A7CBAA /* Info.plist */,
@@ -173,10 +188,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C2ACEB061CF7DE9D005E72DC /* ITSItsOnTheme.plist in Resources */,
+				C2ACEB0D1CF7E0BD005E72DC /* ITSSprintTheme.plist in Resources */,
+				C2ACEB0B1CF7E0BD005E72DC /* ITSMTNTheme.plist in Resources */,
 				C2D9871F1CF3ECF700A7CBAA /* ITSAlertViewBranding.plist in Resources */,
 				C2D9870D1CF3BC3F00A7CBAA /* LaunchScreen.storyboard in Resources */,
 				C2D9870A1CF3BC3F00A7CBAA /* Assets.xcassets in Resources */,
+				C2ACEB0C1CF7E0BD005E72DC /* ITSSapphireTheme.plist in Resources */,
 				C2D987081CF3BC3F00A7CBAA /* Main.storyboard in Resources */,
+				C2ACEB0E1CF7E0BD005E72DC /* ITSTelefonicaTheme.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -189,7 +209,7 @@
 			files = (
 				C2D9871A1CF3BE3E00A7CBAA /* ITSCoreAlertView.m in Sources */,
 				C2D987251CF44EC900A7CBAA /* ITSButton.m in Sources */,
-				C2D987051CF3BC3F00A7CBAA /* ViewController.m in Sources */,
+				C2D987051CF3BC3F00A7CBAA /* AlertViewStyleTVC.m in Sources */,
 				C2D9871D1CF3DBC700A7CBAA /* ITSAlertViewBrandingManager.m in Sources */,
 				C2ACEB041CF67E33005E72DC /* ITSAlert.m in Sources */,
 				C2D987021CF3BC3F00A7CBAA /* AppDelegate.m in Sources */,

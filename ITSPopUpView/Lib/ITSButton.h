@@ -11,7 +11,9 @@
 @interface ITSButton : UIButton
 
 @property (nonatomic, readonly) BOOL negative;
+@property (nonatomic, readonly) BOOL positive;
 
-- (instancetype) initWithFrame:(CGRect)frame negative: (BOOL) negative;
+- (instancetype) initWithFrame:(CGRect)frame negative: (BOOL) negative positive: (BOOL) positive;
+- (void) stylize;
 
 @end
