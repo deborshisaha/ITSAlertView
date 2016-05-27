@@ -187,7 +187,7 @@ const char *InvalidArgumentException = "InvalidArgumentException";
                                                     subtitle:message
                                                  headerImage:nil
                                                  description:nil
-                                                buttonTitles:@[buttonTitle]
+                                                buttonTitles:@[buttonTitle, @"asdf", @"zccf"]
                                          negativeButtonIndex:-1
                                          positiveButtonIndex:-1
                                                       hidden:^{

@@ -20,7 +20,11 @@
 	// Override point for customization after application launch.
 	
     [ITSAlertViewBrandingManager initializeWithBrandingFile:@"ITSAlertViewBranding" andBundle:[NSBundle mainBundle] type:@"plist"];
-    [ITSAlertViewBrandingManager sharedManager].buttonRegularFont = [UIFont fontWithName:@"Avenir Next" size:13.0f];
+	
+    [ITSAlertViewBrandingManager sharedManager].buttonRegularFont = [UIFont fontWithName:@"Avenir Next" size:14.0f];
+	[ITSAlertViewBrandingManager sharedManager].titleFont = [UIFont fontWithName:@"AvenirNext-Medium" size:18.0f];
+	[ITSAlertViewBrandingManager sharedManager].subTitleFont = [UIFont fontWithName:@"Avenir Next" size:14.0f];
+	
 	return YES;
 }
 

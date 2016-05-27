@@ -4,8 +4,35 @@
 <dict>
 	<key>alert</key>
 	<dict>
+		<key>dimensions</key>
+		<dict>
+			<key>potrait</key>
+			<dict>
+				<key>width</key>
+				<integer>500</integer>
+				<key>height</key>
+				<integer>300</integer>
+			</dict>
+			<key>flexibleHeight</key>
+			<true/>
+			<key>landscape</key>
+			<dict>
+				<key>width</key>
+				<integer>350</integer>
+				<key>height</key>
+				<integer>300</integer>
+			</dict>
+			<key>cornerRadius</key>
+			<integer>4</integer>
+		</dict>
 		<key>header</key>
 		<dict>
+			<key>subTitleColor</key>
+			<string>#FF232323</string>
+			<key>backgroundColor</key>
+			<string>#FFFDB108</string>
+			<key>titleColor</key>
+			<string>#FF232323</string>
 			<key>subTitleTextAlignment</key>
 			<integer>1</integer>
 			<key>titleTextAlignment</key>
@@ -55,8 +82,6 @@
 				<string>#FFF5F5F5</string>
 			</dict>
 		</dict>
-		<key>dismissOnTapOutside</key>
-		<false/>
 		<key>contentBackground</key>
 		<dict>
 			<key>style</key>
@@ -84,17 +109,6 @@
 				<key>tintColor</key>
 				<string>#FF0A0A0A</string>
 			</dict>
-		</dict>
-		<key>dimensions</key>
-		<dict>
-			<key>flexibleHeight</key>
-			<true/>
-			<key>cornerRadius</key>
-			<integer>4</integer>
-			<key>height</key>
-			<integer>500</integer>
-			<key>width</key>
-			<integer>300</integer>
 		</dict>
 	</dict>
 </dict>

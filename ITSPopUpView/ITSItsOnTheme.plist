@@ -6,6 +6,12 @@
 	<dict>
 		<key>header</key>
 		<dict>
+			<key>backgroundColor</key>
+			<string>#FF2979FF</string>
+			<key>titleColor</key>
+			<string>#FFFFFFFF</string>
+			<key>subTitleColor</key>
+			<string>#FFFFFFFF</string>
 			<key>subTitleTextAlignment</key>
 			<integer>1</integer>
 			<key>titleTextAlignment</key>
@@ -87,14 +93,24 @@
 		</dict>
 		<key>dimensions</key>
 		<dict>
+			<key>potrait</key>
+			<dict>
+				<key>width</key>
+				<integer>300</integer>
+				<key>height</key>
+				<integer>500</integer>
+			</dict>
 			<key>flexibleHeight</key>
 			<true/>
+			<key>landscape</key>
+			<dict>
+				<key>width</key>
+				<integer>400</integer>
+				<key>height</key>
+				<integer>300</integer>
+			</dict>
 			<key>cornerRadius</key>
 			<integer>4</integer>
-			<key>height</key>
-			<integer>500</integer>
-			<key>width</key>
-			<integer>300</integer>
 		</dict>
 	</dict>
 </dict>

@@ -6,16 +6,30 @@
 #import "ITSAlertViewBrandingManager.h"
 #import "UIColor+ITSAlertView.h"
 
-const CGFloat kMaximumWidth = 300.0f;
-const CGFloat kMaximumHeight = 450.0f;
+#define dDeviceOrientation [[UIDevice currentDevice] orientation]
+#define isPortrait  UIDeviceOrientationIsPortrait(dDeviceOrientation)
+#define isLandscape UIDeviceOrientationIsLandscape(dDeviceOrientation)
+#define isFaceUp    dDeviceOrientation == UIDeviceOrientationFaceUp   ? YES : NO
+#define isFaceDown  dDeviceOrientation == UIDeviceOrientationFaceDown ? YES : NO
+
+const CGFloat kMaximumPotraitWidth = 300.0f;
+const CGFloat kMaximumPotraitHeight = 450.0f;
+
+const CGFloat kMaximumLandscapeWidth = 450.0f;
+const CGFloat kMaximumLandscapeHeight = 300.0f;
+
 const CGFloat kCornerRadius = 10.0f;
 
 static ITSAlertViewBrandingManager *alertViewBrandingManager = nil;
 static NSDictionary *alertViewBrandingDictionary = nil;
 
 @implementation ITSAlertViewBrandingManager
-@synthesize width = _width;
-@synthesize height = _height;
+
+@synthesize potraitWidth = _potraitWidth;
+@synthesize potraitHeight = _potraitHeight;
+@synthesize landscapeWidth = _landscapeWidth;
+@synthesize landscapeHeight =_landscapeHeight;
+
 @synthesize cornerRadius = _cornerRadius;
 @synthesize backgroundOpacityAlpha = _backgroundOpacityAlpha;
 @synthesize backgroundOpacityColor = _backgroundOpacityColor;
@@ -45,8 +59,9 @@ static NSDictionary *alertViewBrandingDictionary = nil;
 @synthesize headerTitleTextAlignment = _headerTitleTextAlignment;
 @synthesize headerSubTitleTextAlignment = _headerSubTitleTextAlignment;
 @synthesize headerPadding = _headerPadding;
-
-
+@synthesize headerBackgroundColor = _headerBackgroundColor;
+@synthesize headerTitleColor = _headerTitleColor;
+@synthesize headerSubTitleColor = _headerSubTitleColor;
 
 @synthesize alertViewContentBackgroundType = _alertViewContentBackgroundType;
 
@@ -74,11 +89,11 @@ static NSDictionary *alertViewBrandingDictionary = nil;
 }
 
 - (void) rebrandUsingPlistFile: (NSString *) fileName andBundle: (NSBundle *) bundle {
-    [self rebrandUsingFile:fileName andBundle:bundle type:@"json"];
+    [self rebrandUsingFile:fileName andBundle:bundle type:@"plist"];
 }
 
 - (void) rebrandUsingJSONFile: (NSString *) fileName andBundle: (NSBundle *) bundle {
-    [self rebrandUsingFile:fileName andBundle:bundle type:@"plist"];
+    [self rebrandUsingFile:fileName andBundle:bundle type:@"json"];
 }
 
 - (void) rebrandUsingJSONFile: (NSString *) fileName {
@@ -94,18 +109,37 @@ static NSDictionary *alertViewBrandingDictionary = nil;
     alertViewBrandingDictionary = [NSDictionary dictionaryWithContentsOfFile:[bundle pathForResource:fileName ofType:type]];
 
     [self brandUsingDictionary:alertViewBrandingDictionary];
-    
-    [self applyLimits];
+	
+	if (isLandscape) {
+		[self applyLandscapeLimits];
+	} else {
+		[self applyPotraitLimits];
+	}
 }
 
-- (void) applyLimits {
+- (void) applyPotraitLimits {
 	
-	if (_width > kMaximumWidth) {
-		_width = kMaximumWidth;
+	if (_potraitWidth > kMaximumPotraitWidth) {
+		_potraitWidth = kMaximumPotraitWidth;
 	}
 	
-	if (_height > kMaximumHeight) {
-		_height = kMaximumHeight;
+	if (_potraitHeight > kMaximumPotraitHeight) {
+		_potraitHeight = kMaximumPotraitHeight;
+	}
+	
+	if (_cornerRadius > kCornerRadius) {
+		_cornerRadius = kCornerRadius;
+	}
+}
+
+- (void) applyLandscapeLimits {
+	
+	if (_potraitWidth > kMaximumPotraitWidth) {
+		_potraitWidth = kMaximumPotraitWidth;
+	}
+	
+	if (_potraitHeight > kMaximumPotraitHeight) {
+		_potraitHeight = kMaximumPotraitHeight;
 	}
 	
 	if (_cornerRadius > kCornerRadius) {
@@ -115,8 +149,12 @@ static NSDictionary *alertViewBrandingDictionary = nil;
 
 - (void) brandUsingDictionary: (NSDictionary *) dictionary {
 	
-	_width = [[dictionary valueForKeyPath:@"alert.dimensions.width"] floatValue];
-	_height = [[dictionary valueForKeyPath:@"alert.dimensions.height"] floatValue];
+	_potraitWidth = [[dictionary valueForKeyPath:@"alert.dimensions.potrait.width"] floatValue];
+	_potraitHeight = [[dictionary valueForKeyPath:@"alert.dimensions.potrait.height"] floatValue];
+	
+	_landscapeWidth = [[dictionary valueForKeyPath:@"alert.dimensions.landscape.width"] floatValue];
+	_landscapeHeight = [[dictionary valueForKeyPath:@"alert.dimensions.landscape.height"] floatValue];
+	
 	_cornerRadius = [[dictionary valueForKeyPath:@"alert.dimensions.cornerRadius"] floatValue];
 	_flexibleHeight = [[dictionary valueForKeyPath:@"alert.dimensions.flexibleHeight"] boolValue];
     
@@ -151,7 +189,12 @@ static NSDictionary *alertViewBrandingDictionary = nil;
     
     _headerTitleTextAlignment = [self textAlignmentFromNumber: [[dictionary valueForKeyPath:@"alert.header.titleTextAlignment"] integerValue]];
     _headerSubTitleTextAlignment = [self textAlignmentFromNumber: [[dictionary valueForKeyPath:@"alert.header.subTitleTextAlignment"] integerValue]];
-    
+	
+	_headerTitleColor = [UIColor colorFromHexString:[dictionary valueForKeyPath:@"alert.header.titleColor"]];
+	_headerSubTitleColor = [UIColor colorFromHexString:[dictionary valueForKeyPath:@"alert.header.subTitleColor"]];
+	
+	_headerBackgroundColor = [UIColor colorFromHexString:[dictionary valueForKeyPath:@"alert.header.backgroundColor"]];
+	
     if ([[dictionary valueForKeyPath:@"alert.contentBackground.style"] isEqualToString:@"glossy"]) {
         _alertViewContentBackgroundType = ITSAlertViewContentBackgroundTypeGlossy;
     } else {
@@ -172,12 +215,20 @@ static NSDictionary *alertViewBrandingDictionary = nil;
     }
 }
 
-- (CGFloat) width {
-	return _width;
+- (CGFloat) potraitWidth {
+	return _potraitWidth;
 }
 
-- (CGFloat) height {
-	return _height;
+- (CGFloat) potraitHeight {
+	return _potraitHeight;
+}
+
+- (CGFloat) landscapeWidth {
+	return _landscapeWidth;
+}
+
+- (CGFloat) landscapeHeight {
+	return _landscapeHeight;
 }
 
 - (ITSAlertViewBackgroundType) popUpBackgroundType {
@@ -188,13 +239,13 @@ static NSDictionary *alertViewBrandingDictionary = nil;
 	return _cornerRadius;
 }
 
-- (CGFloat) maximumHeight {
-	return kMaximumHeight;
-}
-
-- (CGFloat) maximumWidth {
-	return kMaximumWidth;
-}
+//- (CGFloat) maximumHeight {
+//	return kMaximumHeight;
+//}
+//
+//- (CGFloat) maximumWidth {
+//	return kMaximumWidth;
+//}
 
 - (void) setSubTitleFont:(UIFont *) stf {
     _subTitleFont = stf;

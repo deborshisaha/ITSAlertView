@@ -9,6 +9,12 @@
 
 #define kPadding 24.0f
 
+#define dDeviceOrientation [[UIDevice currentDevice] orientation]
+#define isPortrait  UIDeviceOrientationIsPortrait(dDeviceOrientation)
+#define isLandscape UIDeviceOrientationIsLandscape(dDeviceOrientation)
+#define isFaceUp    dDeviceOrientation == UIDeviceOrientationFaceUp   ? YES : NO
+#define isFaceDown  dDeviceOrientation == UIDeviceOrientationFaceDown ? YES : NO
+
 typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
     ITSAlertViewHeaderTypeImageTitle = 1,
     ITSAlertViewHeaderTypeTitle = 2,
@@ -139,9 +145,7 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
         [self.alertContentView addSubview:[self headerView]];
         [self.alertContentView addSubview:[self footerView]];
         [self.alertContentView addSubview:[self contentView]];
-        
-        [self layoutSubviews];
-        
+
         self.alertContentView.frame = CGRectOffset(self.alertContentView.frame, 0, CGRectGetMidY(self.alertContentView.frame) - CGRectGetMidY(_parentView.frame)/2);
     }
     
@@ -149,16 +153,26 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 }
 
 - (CGFloat) permittedContentViewHeight {
-    return [ITSAlertViewBrandingManager sharedManager].height  - CGRectGetHeight(self.headerView.frame) - CGRectGetHeight(self.buttonArea.frame);
+	
+	if (isLandscape) {
+		return [ITSAlertViewBrandingManager sharedManager].landscapeHeight  - CGRectGetHeight(self.headerView.frame) - CGRectGetHeight(self.buttonArea.frame);
+	} else {
+		return [ITSAlertViewBrandingManager sharedManager].potraitHeight  - CGRectGetHeight(self.headerView.frame) - CGRectGetHeight(self.buttonArea.frame);
+	}
 }
 
 - (CGRect) bodyViewFrame {
-    
-    CGFloat bodyViewFrameHeight = [ITSAlertViewBrandingManager sharedManager].height  - CGRectGetHeight(self.headerView.frame) - CGRectGetHeight(self.buttonArea.frame);
-    
+	
+	CGFloat bodyViewFrameHeight = 0;
+	
+	if (isLandscape) {
+		bodyViewFrameHeight = [ITSAlertViewBrandingManager sharedManager].landscapeHeight  - CGRectGetHeight(self.headerView.frame) - CGRectGetHeight(self.buttonArea.frame);
+	} else {
+		bodyViewFrameHeight = [ITSAlertViewBrandingManager sharedManager].potraitHeight  - CGRectGetHeight(self.headerView.frame) - CGRectGetHeight(self.buttonArea.frame);
+	}
+	
     if ([ITSAlertViewBrandingManager sharedManager].flexibleHeight) {
-        // if flexible height, respect only maximumHeight
-        bodyViewFrameHeight = MIN([ITSAlertViewBrandingManager sharedManager].height, bodyViewFrameHeight);
+		bodyViewFrameHeight = (isLandscape? MIN([ITSAlertViewBrandingManager sharedManager].landscapeHeight, bodyViewFrameHeight): MIN([ITSAlertViewBrandingManager sharedManager].potraitHeight, bodyViewFrameHeight));
     }
     
     return CGRectMake(0, 0, self.alertViewWidth, bodyViewFrameHeight);
@@ -215,8 +229,16 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 	
 	if (!_alertContentView) {
 		
-		CGFloat xPos = ((nil != self.parentView) ? CGRectGetWidth(self.parentView.bounds) / 2 : 0) - [ITSAlertViewBrandingManager sharedManager].width / 2;
-		CGFloat yPos = ((nil != self.parentView) ? CGRectGetHeight(self.parentView.bounds) / 2 : 0) - [ITSAlertViewBrandingManager sharedManager].height / 2;
+		CGFloat xPos = 0;
+		CGFloat yPos = 0;
+		
+		if (isLandscape) {
+			xPos = ((nil != self.parentView) ? CGRectGetWidth(self.parentView.bounds) / 2 : 0) - [ITSAlertViewBrandingManager sharedManager].landscapeWidth / 2;
+			yPos = ((nil != self.parentView) ? CGRectGetHeight(self.parentView.bounds) / 2 : 0) - [ITSAlertViewBrandingManager sharedManager].landscapeHeight / 2;
+		} else {
+			xPos = ((nil != self.parentView) ? CGRectGetWidth(self.parentView.bounds) / 2 : 0) - [ITSAlertViewBrandingManager sharedManager].potraitWidth / 2;
+			yPos = ((nil != self.parentView) ? CGRectGetHeight(self.parentView.bounds) / 2 : 0) - [ITSAlertViewBrandingManager sharedManager].potraitHeight / 2;
+		}
 		
 		UIView *view = nil;
 		CGRect frame = CGRectMake(xPos, yPos, self.alertViewWidth, self.alertViewHeight);
@@ -242,8 +264,6 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 		
 		_alertContentView = view;
 		
-        _alertContentView.layer.borderWidth = 0.5f;
-        _alertContentView.layer.borderColor = [UIColor colorWithWhite:0.90f alpha:1.0f].CGColor;
 		view = nil;
 	}
     
@@ -295,7 +315,15 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 
 	__block CGFloat perWidth = 0;
 	
-	if (self.buttonTitles.count <= 2) {
+	int maxNumberOfButtonsInARow = -1;
+	
+	if (isLandscape) {
+		maxNumberOfButtonsInARow = 3;
+	} else {
+		maxNumberOfButtonsInARow = 2;
+	}
+	
+	if (self.buttonTitles.count <= maxNumberOfButtonsInARow) {
 		perWidth = self.alertViewWidth / self.buttonTitles.count;
 	} else {
 		perWidth = self.alertViewWidth;
@@ -364,7 +392,7 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 		_headerTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(kPadding, kPadding, self.alertViewWidth - (2 * kPadding), 56.0f)];
         _headerTitleLabel.numberOfLines = 3;
         _headerTitleLabel.font = [ITSAlertViewBrandingManager sharedManager].titleFont;
-		[_headerTitleLabel setTextColor:[UIColor darkTextColor]];
+		[_headerTitleLabel setTextColor:[ITSAlertViewBrandingManager sharedManager].headerTitleColor];
 		[_headerTitleLabel setTextAlignment:[ITSAlertViewBrandingManager sharedManager].headerTitleTextAlignment];
         _headerTitleLabel.text = _headerTitle;
         [_headerTitleLabel sizeToFit];
@@ -378,7 +406,7 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
     if (!_subTitleLabel) {
         _subTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(kPadding, 0, self.alertViewWidth - (2 * kPadding), 56.0f)];
         _subTitleLabel.numberOfLines = 3;
-        [_subTitleLabel setTextColor:[UIColor darkTextColor]];
+        [_subTitleLabel setTextColor:[ITSAlertViewBrandingManager sharedManager].headerSubTitleColor];
         _subTitleLabel.font = [ITSAlertViewBrandingManager sharedManager].subTitleFont;
         [_subTitleLabel setTextAlignment:[ITSAlertViewBrandingManager sharedManager].headerSubTitleTextAlignment];
         _subTitleLabel.text = _subTitle;
@@ -395,10 +423,12 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 - (CGRect) footerViewFrame {
     
     NSInteger numberOfButtonLayers = 1;
-    
-    if (self.buttonTitles.count > 2) {
-        numberOfButtonLayers = self.buttonTitles.count;
-    }
+	
+	if (isLandscape) {
+		numberOfButtonLayers = ((self.buttonTitles.count > 3)? self.buttonTitles.count:numberOfButtonLayers);
+	} else {
+		numberOfButtonLayers = ((self.buttonTitles.count > 2)? self.buttonTitles.count:numberOfButtonLayers);
+	}
     
     return CGRectMake(0, 0 , self.alertViewWidth, (44.5f * numberOfButtonLayers));
 }
@@ -464,7 +494,9 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
         } else if (self.alertViewHeaderType == ITSAlertViewHeaderTypeImageTitle) {
             
         }
-        
+		
+		_headerView.backgroundColor = [ITSAlertViewBrandingManager sharedManager].headerBackgroundColor;
+		
         [_headerView addSubview:[self seperatorLineWithFrame: CGRectOffset(self.horizontalSeperatorLineFrame, 0, height)]];
     }
     
@@ -550,12 +582,27 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 }
 
 - (CGFloat) alertViewWidth {
-    return [ITSAlertViewBrandingManager sharedManager].width;
+	
+	if (isLandscape) {
+    	return [ITSAlertViewBrandingManager sharedManager].landscapeWidth;
+	} else {
+		return [ITSAlertViewBrandingManager sharedManager].potraitWidth;
+	}
 }
 
 - (CGFloat) alertViewHeight {
-    
     return CGRectGetHeight(self.headerView.frame) + CGRectGetHeight([self contentView].frame) + CGRectGetHeight([self footerViewFrame]);
+}
+
+- (void) layoutSubviews {
+	
+	[super layoutSubviews];
+	
+	if (isLandscape) {
+		NSLog(@"Landscape %@", NSStringFromCGRect([UIApplication sharedApplication].keyWindow.bounds));
+	} else {
+		NSLog(@"Potrait  %@", NSStringFromCGRect([UIApplication sharedApplication].keyWindow.bounds));
+	}
 }
 
 @end

@@ -13,17 +13,17 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewContentBackgroundType) {
 
 @interface ITSAlertViewBrandingManager : NSObject
 
-////  view maximumWidth
-//@property (nonatomic, readonly) CGFloat maximumWidth;
-//
-////  view maximumHeight
-//@property (nonatomic, readonly) CGFloat maximumHeight;
+//  view potraitWidth
+@property (nonatomic, readonly) CGFloat potraitWidth;
 
-//  view width
-@property (nonatomic, readonly) CGFloat width;
+//  view potraitHeight
+@property (nonatomic, readonly) CGFloat potraitHeight;
 
-//  view height
-@property (nonatomic, readonly) CGFloat height;
+//  view potraitWidth
+@property (nonatomic, readonly) CGFloat landscapeWidth;
+
+//  view potraitHeight
+@property (nonatomic, readonly) CGFloat landscapeHeight;
 
 //  cornerRadius
 @property (nonatomic, readonly) CGFloat cornerRadius;
@@ -94,6 +94,12 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewContentBackgroundType) {
 @property (nonatomic, readonly) NSTextAlignment headerSubTitleTextAlignment;
 
 @property (nonatomic, readonly) CGFloat headerPadding;
+
+@property (nonatomic, readonly) UIColor *headerBackgroundColor;
+
+@property (nonatomic, readonly) UIColor *headerTitleColor;
+
+@property (nonatomic, readonly) UIColor *headerSubTitleColor;
 
 @property (nonatomic, readonly) ITSAlertViewContentBackgroundType alertViewContentBackgroundType;
 

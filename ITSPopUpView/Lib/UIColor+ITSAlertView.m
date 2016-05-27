@@ -11,7 +11,13 @@
 @implementation UIColor (ITSAlertView)
 
 + (UIColor *)colorFromHexString:(NSString *)hexString {
+	
+	if (!hexString) {
+		return nil;
+	}
+	
 	unsigned rgbValue = 0;
+	
 	NSScanner *scanner = [NSScanner scannerWithString:hexString];
 	[scanner setScanLocation:1];
 	[scanner scanHexInt:&rgbValue];
