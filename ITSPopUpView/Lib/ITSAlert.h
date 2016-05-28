@@ -25,6 +25,9 @@ typedef void (^ButtonClickBlock)(void);
 
 @interface ITSAlert : NSObject
 
+// Single Tap
+- (instancetype) initTapSelectWithDataSource: (id) dataSource withTitle:(NSString *) title andDescription:(NSString *) description tappedOptionBlock: (SelectedOptionBlock) tOB dismissTitle:(NSString *)dt dismissActionBlock:(ButtonClickBlock) dAB primaryActionTitle:(NSString *)pt primaryActionBlock: (ButtonClickBlock) pAB;
+
 // Single Select
 - (instancetype) initSingleSelectWithOptions: (NSArray *) options withTitle:(NSString *) title andDescription:(NSString *) description selectedOptionsBlock: (SelectedOptionBlock) selectedOptionBlock;
 

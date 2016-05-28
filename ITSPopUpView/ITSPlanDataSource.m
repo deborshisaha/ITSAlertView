@@ -40,10 +40,6 @@
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
-	[tableView registerNib:[UINib nibWithNibName:NSStringFromClass([UpsellPlanItemTableViewCell class]) bundle:[NSBundle mainBundle]] forCellReuseIdentifier:NSStringFromClass([UpsellPlanItemTableViewCell class])];
-	
-	//[tableView registerClass:[UpsellPlanItemTableViewCell class] forCellReuseIdentifier:NSStringFromClass([UpsellPlanItemTableViewCell class])];
-	
 	UpsellPlanItemTableViewCell *upsellPlanItemCell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([UpsellPlanItemTableViewCell class])];
 	Plan *plan = [self objectAtIndexPath:indexPath];
 	[upsellPlanItemCell configureWithPlan: plan];

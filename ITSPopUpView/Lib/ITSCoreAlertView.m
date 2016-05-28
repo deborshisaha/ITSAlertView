@@ -36,7 +36,7 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 @property(nonatomic, strong) UIView *footerView;
 
 @property(nonatomic, strong) NSArray *buttonTitles;
-@property(nonatomic, copy) void (^buttonPressedBlock)(NSInteger btnIdx);
+@property(nonatomic, strong) void (^buttonPressedBlock)(NSInteger btnIdx);
 @property(nonatomic, copy) void (^hiddenCompletionBlock)(void);
 
 @property(nonatomic, strong) NSString *headerTitle;

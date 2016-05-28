@@ -75,7 +75,8 @@ const char *InvalidArgumentException = "InvalidArgumentException";
 @property (nonatomic, strong) NSMutableSet *selectedOptionsSet;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) id<UITableViewDataSource, ITSAlertOptionsDelegate> alertOptionsDataSource;
-@property (nonatomic, copy) SelectedOptionsBlock selectedOptionsBlock;
+@property (nonatomic, strong) SelectedOptionsBlock selectedOptionsBlock;
+@property (nonatomic, strong) SelectedOptionBlock tappedOptionBlock;
 @property (nonatomic, assign) NSInteger selectionLimit;
 
 @end
@@ -123,7 +124,7 @@ const char *InvalidArgumentException = "InvalidArgumentException";
                                      withTitle: (NSString *) title
                                 andDescription: (NSString *) description
                           selectedOptionsBlock: (SelectedOptionsBlock) selectedOptionsBlock
-                                selectionLimit: (NSInteger) selectionLimit{
+                                selectionLimit: (NSInteger) selectionLimit {
 	
 	self = [super init];
 	
@@ -146,7 +147,7 @@ const char *InvalidArgumentException = "InvalidArgumentException";
         
         if (!_alertView) {
             
-            __weak __typeof__(self) weakSelf = self;
+            __strong __typeof__(self) strongSelf = self;
             
             _alertView = [[ITSCoreAlertView alloc] initWithTitle: title
                                                         subtitle: description
@@ -157,31 +158,31 @@ const char *InvalidArgumentException = "InvalidArgumentException";
                                              positiveButtonIndex:-1
                                                           hidden:^{
                                                               // Clean up
-                                                              [weakSelf cleanUp];
+                                                              [strongSelf cleanUp];
                                                           }
                           
                                               buttonPressedBlock:^(NSInteger buttonIndex) {
                                                   
                                                   if (buttonIndex == 1) {
                                                       
-                                                      NSArray *selectedIndicesIndexPath = [self.selectedOptionsSet allObjects];
+                                                      NSArray *selectedIndicesIndexPath = [strongSelf.selectedOptionsSet allObjects];
                                                       
                                                       if (!selectedIndicesIndexPath || selectedIndicesIndexPath.count == 0) {
-                                                          self.selectedOptionsBlock(nil);
+                                                          strongSelf.selectedOptionsBlock(nil);
                                                       }
                                                       
                                                       NSMutableArray *selectedObjects= [[NSMutableArray alloc] initWithCapacity:selectedIndicesIndexPath.count];
                                                       
                                                       for (NSIndexPath *idxPath in selectedIndicesIndexPath) {
 														  
-														  if ([self.tableView.dataSource respondsToSelector:@selector(objectAtIndexPath:)]) {
-															  [selectedObjects addObject:[(id<ITSAlertOptionsDelegate>)self.tableView.dataSource objectAtIndexPath:idxPath]];
+														  if ([strongSelf.tableView.dataSource respondsToSelector:@selector(objectAtIndexPath:)]) {
+															  [selectedObjects addObject:[(id<ITSAlertOptionsDelegate>)strongSelf.tableView.dataSource objectAtIndexPath:idxPath]];
 														  } else {
 															  [selectedObjects addObject:idxPath];
 														  }
                                                       }
                                                       
-                                                      self.selectedOptionsBlock(selectedObjects);
+                                                      strongSelf.selectedOptionsBlock(selectedObjects);
                                                   }
                                               }];
         }
@@ -217,6 +218,59 @@ const char *InvalidArgumentException = "InvalidArgumentException";
 // Simple Permission alert having title, message and couple of buttons
 - (instancetype) initSimpleAlertWithTitle:(NSString *) title andMessage:(NSString *) message positiveTitle: (NSString *)pt positiveBlock: (ButtonClickBlock) positiveBlock {
     self = [self initSimpleAlertWithTitle:title andMessage:message positiveTitle:title negativeTitle:@"Cancel" positiveBlock:positiveBlock negativeBlock:nil];
+    return self;
+}
+
+- (instancetype) initTapSelectWithDataSource: (id) dataSource withTitle:(NSString *) title andDescription:(NSString *) description tappedOptionBlock: (SelectedOptionBlock) tOB dismissTitle:(NSString *)dt dismissActionBlock:(ButtonClickBlock) dAB primaryActionTitle:(NSString *)pt primaryActionBlock: (ButtonClickBlock) pAB {
+
+    self = [super init];
+    
+    if (self) {
+        
+        _alertOptionsDataSource = dataSource;
+        _tappedOptionBlock = tOB;
+        _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+        
+        if ([_alertOptionsDataSource respondsToSelector:@selector(registerNibOfOptionsCellForTableView:)]) {
+            [_alertOptionsDataSource registerNibOfOptionsCellForTableView:_tableView];
+        }
+        
+        _tableView.dataSource  = _alertOptionsDataSource;
+        _tableView.delegate = self;
+        _tableView.allowsSelection = YES;
+        _tableView.showsVerticalScrollIndicator = NO;
+        
+        [_tableView reloadData];
+        
+        if (!_alertView) {
+            
+            __strong ButtonClickBlock strongpAB = pAB;
+            __strong ButtonClickBlock strongdAB = dAB;
+            __strong __typeof__(self) strongSelf = self;
+            
+            _alertView = [[ITSCoreAlertView alloc] initWithTitle: title
+                                                        subtitle: description
+                                                     headerImage: nil
+                                                       tableView: _tableView
+                                                    buttonTitles:@[dt, pt]
+                                             negativeButtonIndex:-1
+                                             positiveButtonIndex:1
+                                                          hidden:^{
+                                                              // Clean up
+                                                              [strongSelf cleanUp];
+                                                          }
+                          
+                                              buttonPressedBlock:^(NSInteger buttonIndex) {
+                                                                                                    
+                                                  if (buttonIndex == 1 ) {
+                                                      (!strongpAB)?: strongpAB();
+                                                  } else if (buttonIndex == 0) {
+                                                      (!strongdAB)?: strongdAB();
+                                                  }
+                                              }];
+        }
+    }
+    
     return self;
 }
 
@@ -256,6 +310,14 @@ const char *InvalidArgumentException = "InvalidArgumentException";
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	
+    if (_tappedOptionBlock) {
+        if ([_alertOptionsDataSource respondsToSelector:@selector(objectAtIndexPath:)]) {
+            self.tappedOptionBlock([_alertOptionsDataSource objectAtIndexPath:indexPath]);
+        } else {
+            self.tappedOptionBlock(indexPath);
+        }
+    }
+    
 	if (!_selectedOptionsSet) {
 		_selectedOptionsSet = [[NSMutableSet alloc] init];
 	}
