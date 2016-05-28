@@ -28,9 +28,6 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewContentBackgroundType) {
 //  cornerRadius
 @property (nonatomic, readonly) CGFloat cornerRadius;
 
-//  backgroundOpacityAlpha
-@property (nonatomic, readonly) CGFloat backgroundOpacityAlpha;
-
 //  backgroundOpacityColor
 @property (nonatomic, readonly) UIColor *backgroundOpacityColor;
 

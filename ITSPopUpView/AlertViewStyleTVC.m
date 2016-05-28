@@ -7,7 +7,8 @@
 //
 
 #import "AlertViewStyleTVC.h"
-#import "ITSAlert.h"
+#import "ITSPlanDataSource.h"
+#import "Plan.h"
 
 // Demo purpose only
 #import "ITSAlertViewBrandingManager.h"
@@ -27,7 +28,7 @@
 	[super viewDidLoad];
     
     if (!_stylesArray) {
-        _stylesArray = [NSArray arrayWithObjects:@"Multiple Select", @"Single Select", @"Multiple Select with limit", @"Simple Alert", @"Notification Alert", nil];
+        _stylesArray = [NSArray arrayWithObjects:@"Multiple Select", @"Single Select", @"Multiple Select with limit", @"Simple Alert", @"Notification Alert", @"Custom Multi Select", nil];
     }
     
     if (!_customerThemesArray) {
@@ -77,7 +78,7 @@
 - (NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     
     if (section == 0) {
-        return @"Styles";
+        return @"Alert Styles";
     } else if (section == 1) {
         return @"Customer themes";
     } else {
@@ -161,6 +162,12 @@
         case 4:
             [self notificationAlertClicked];
             break;
+		case 5:
+			[self customMultiSelect];
+			break;
+		case 6:
+			[self customMultiSelectWithLimit];
+			break;
         default:
             break;
     }
@@ -168,6 +175,27 @@
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 48.0f;
+}
+
+- (void) customMultiSelect {
+	
+	Plan *plan1 = [[Plan alloc] initWithPlanName:@"Mexico calling" planDescription:@"Good plan to call Mexico" planPrice:@(30)];
+	Plan *plan2 = [[Plan alloc] initWithPlanName:@"UK calling" planDescription:@"Excellent plan to call UK" planPrice:@(30)];
+	Plan *plan3 = [[Plan alloc] initWithPlanName:@"Singapore calling" planDescription:@"Cheap plan to call Singapore. Cheap plan to call Singapore. Cheap plan to call Singapore. Cheap plan to call Singapore" planPrice:@(30)];
+	
+	ITSPlanDataSource *planDataSource = [[ITSPlanDataSource alloc] initWithPlansArray:[[NSArray alloc] initWithObjects:plan1, plan2, plan3, nil] ];
+	
+	ITSAlert *notificationAlert = [[ITSAlert alloc] initMultiSelectWithDataSource:planDataSource withTitle:@"No international plan" andDescription:@"Buy an international plan" selectedOptionsBlock:^(NSArray *selectedObjects) {
+		NSLog(@"selectedObjects.count %d", selectedObjects.count);
+	}];
+	
+	[notificationAlert show];
+}
+
+- (void) customMultiSelectWithLimit {
+	
+	ITSAlert *notificationAlert = [[ITSAlert alloc] initNotificationAlertWithTitle:@"You will run today" andMessage:@"Running is good for health" buttonTitle:@"Okay" buttonBlock:nil];
+	[notificationAlert show];
 }
 
 - (void) notificationAlertClicked {

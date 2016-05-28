@@ -30,7 +30,6 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 
 // Main sections
 @property(nonatomic, strong) UIView *buttonArea;
-
 @property(nonatomic, strong) UIView *headerView;
 @property(nonatomic, strong) UIView *contentView;
 @property(nonatomic, strong) UITableView *tableView;
@@ -222,7 +221,6 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
         ((!self.hiddenCompletionBlock)? : self.hiddenCompletionBlock());
         
 	}];
-	
 }
 
 - (UIView *) alertContentView {
@@ -264,6 +262,14 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 		
 		_alertContentView = view;
 		
+		CGFloat alphaComponent = CGColorGetAlpha([ITSAlertViewBrandingManager sharedManager].backgroundOpacityColor.CGColor);
+		
+		if (alphaComponent < 0.1f) {
+			// When the background color is too light, add a border to help user differentiate with background and notification view
+			_alertContentView.layer.borderWidth = 0.5f;
+			_alertContentView.layer.borderColor = [UIColor colorWithWhite:0.9f alpha:1.0f].CGColor;
+		}
+
 		view = nil;
 	}
     
@@ -274,23 +280,7 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 	
 	_backgroundBlur = backgroundBlur;
 	
-	if (_backgroundBlur) {
-		//structure view
-//		UIGraphicsBeginImageContext(self.parentView.frame.size);
-//		CGContextRef context = UIGraphicsGetCurrentContext();
-//		[self.parentView.layer renderInContext:context];
-//		UIImage *clipImg = UIGraphicsGetImageFromCurrentImageContext();
-//		UIGraphicsEndImageContext();
-//		
-//		
-//		UIColor *tintColor = [UIColor colorWithWhite:0.10 alpha:0.3];
-//		
-//		UIImage *blurImg = [UIImageEffects imageByApplyingBlurToImage:clipImg withRadius:10 tintColor:tintColor saturationDeltaFactor:1.8 maskImage:nil];
-//		
-//		UIImageView *bgImgView = [[UIImageView alloc] initWithImage:blurImg];
-//		
-//		[self addSubview:bgImgView];
-	} else {
+	if (!_backgroundBlur) {
 		self.backgroundColor = [ITSAlertViewBrandingManager sharedManager].backgroundOpacityColor;
 	}
 }
@@ -595,14 +585,7 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 }
 
 - (void) layoutSubviews {
-	
 	[super layoutSubviews];
-	
-	if (isLandscape) {
-		NSLog(@"Landscape %@", NSStringFromCGRect([UIApplication sharedApplication].keyWindow.bounds));
-	} else {
-		NSLog(@"Potrait  %@", NSStringFromCGRect([UIApplication sharedApplication].keyWindow.bounds));
-	}
 }
 
 @end

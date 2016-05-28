@@ -31,7 +31,6 @@ static NSDictionary *alertViewBrandingDictionary = nil;
 @synthesize landscapeHeight =_landscapeHeight;
 
 @synthesize cornerRadius = _cornerRadius;
-@synthesize backgroundOpacityAlpha = _backgroundOpacityAlpha;
 @synthesize backgroundOpacityColor = _backgroundOpacityColor;
 @synthesize contentBackgroundGlossyTintColor = _contentBackgroundGlossyTintColor;
 @synthesize contentBackgroundSolidColor = _contentBackgroundSolidColor;
@@ -157,8 +156,7 @@ static NSDictionary *alertViewBrandingDictionary = nil;
 	
 	_cornerRadius = [[dictionary valueForKeyPath:@"alert.dimensions.cornerRadius"] floatValue];
 	_flexibleHeight = [[dictionary valueForKeyPath:@"alert.dimensions.flexibleHeight"] boolValue];
-    
-	_backgroundOpacityAlpha = [[dictionary valueForKeyPath:@"alert.background.opacity.alpha"] floatValue];
+
 	_backgroundOpacityColor = [UIColor colorFromHexString:[dictionary valueForKeyPath:@"alert.background.opacity.tintColor"]];
 	
 	_contentBackgroundGlossyTintColor = [UIColor colorFromHexString:[dictionary valueForKeyPath:@"alert.contentBackground.glossy.tintColor"]];

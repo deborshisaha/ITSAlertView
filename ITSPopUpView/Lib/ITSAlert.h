@@ -10,6 +10,19 @@ typedef void (^SelectedOptionBlock)(id selectedObject);
 typedef void (^SelectedButtonBlock)(NSInteger buttonIndex);
 typedef void (^ButtonClickBlock)(void);
 
+@protocol ITSAlertOptionsDelegate <NSObject>
+
+@required
+- (id) objectAtIndexPath: (NSIndexPath *) indexPath;
+- (NSInteger) numberOfOptions;
+- (void) cleanUp;
+
+@optional
+- (void) registerNibOfOptionsCellForTableView: (UITableView *) tableView;
+- (BOOL) checkmarkOnSelection;
+
+@end
+
 @interface ITSAlert : NSObject
 
 // Single Select
@@ -22,7 +35,10 @@ typedef void (^ButtonClickBlock)(void);
 - (instancetype) initMultiSelectWithOptions: (NSArray *) options withTitle:(NSString *) title andDescription:(NSString *) description selectedOptionsBlock: (SelectedOptionsBlock) selectedOptionsBlock selectionLimit: (NSInteger) selectionLimit;
 
 // Multi select with external data source
-- (instancetype) initMultiSelectWithDataSource: (id<UITableViewDataSource>) dataSource withTitle:(NSString *) title andDescription:(NSString *) description selectedOptionsBlock: (SelectedOptionsBlock) selectedOptionsBlock selectionLimit: (NSInteger) selectionLimit;
+- (instancetype) initMultiSelectWithDataSource: (id<UITableViewDataSource, ITSAlertOptionsDelegate>) dataSource withTitle:(NSString *) title andDescription:(NSString *) description selectedOptionsBlock: (SelectedOptionsBlock) selectedOptionsBlock selectionLimit: (NSInteger) selectionLimit;
+
+// Multi select with external data source without limit
+- (instancetype) initMultiSelectWithDataSource: (id<UITableViewDataSource, ITSAlertOptionsDelegate>) dataSource withTitle:(NSString *) title andDescription:(NSString *) description selectedOptionsBlock: (SelectedOptionsBlock) selectedOptionsBlock;
 
 // Simple Permission alert having title, message and couple of buttons
 - (instancetype) initSimpleAlertWithTitle:(NSString *) title andMessage:(NSString *) message positiveTitle: (NSString *)pt negativeTitle: (NSString *)nt positiveBlock: (ButtonClickBlock) positiveBlock negativeBlock: (ButtonClickBlock) negativeBlock ;

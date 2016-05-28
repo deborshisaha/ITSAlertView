@@ -7,11 +7,11 @@
 		<key>header</key>
 		<dict>
 			<key>backgroundColor</key>
-			<string>#FF2979FF</string>
+			<string>#FFFFFFFF</string>
 			<key>titleColor</key>
-			<string>#FFFFFFFF</string>
+			<string>#FF000000</string>
 			<key>subTitleColor</key>
-			<string>#FFFFFFFF</string>
+			<string>#FF000000</string>
 			<key>subTitleTextAlignment</key>
 			<integer>1</integer>
 			<key>titleTextAlignment</key>
@@ -37,15 +37,15 @@
 			<key>positive</key>
 			<dict>
 				<key>bold</key>
-				<false/>
+				<true/>
 				<key>titleColor</key>
-				<string>#FF007A00</string>
+				<string>#FF007AFF</string>
+				<key>onPressTitleColor</key>
+				<string>#FF007AFF</string>
 				<key>backgroundColor</key>
 				<string>#FFFFFFFF</string>
-				<key>onPressTitleColor</key>
-				<string>#FFFFFFFF</string>
 				<key>onPressBackgroundColor</key>
-				<string>#FF007A00</string>
+				<string>#FFF5F5F5</string>
 			</dict>
 			<key>negative</key>
 			<dict>
@@ -58,11 +58,9 @@
 				<key>backgroundColor</key>
 				<string>#FFFF0000</string>
 				<key>onPressBackgroundColor</key>
-				<string>#E5E50000</string>
+				<string>#FFF5F5F5</string>
 			</dict>
 		</dict>
-		<key>dismissOnTapOutside</key>
-		<false/>
 		<key>contentBackground</key>
 		<dict>
 			<key>style</key>
@@ -83,7 +81,7 @@
 			<key>opacity</key>
 			<dict>
 				<key>tintColor</key>
-				<string>#535A5A5A</string>
+				<string>#005A5A5A</string>
 			</dict>
 			<key>blur</key>
 			<dict>
@@ -100,6 +98,8 @@
 				<key>height</key>
 				<integer>500</integer>
 			</dict>
+			<key>flexibleHeight</key>
+			<true/>
 			<key>landscape</key>
 			<dict>
 				<key>width</key>
@@ -107,8 +107,6 @@
 				<key>height</key>
 				<integer>300</integer>
 			</dict>
-			<key>flexibleHeight</key>
-			<true/>
 			<key>cornerRadius</key>
 			<integer>4</integer>
 		</dict>

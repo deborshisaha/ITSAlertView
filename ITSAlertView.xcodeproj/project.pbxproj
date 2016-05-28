@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C29BE6CA1CF8A7E90086471C /* Plan.m in Sources */ = {isa = PBXBuildFile; fileRef = C29BE6C91CF8A7E90086471C /* Plan.m */; };
+		C29BE6CE1CF8A8B70086471C /* UpsellPlanItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C29BE6CC1CF8A8B70086471C /* UpsellPlanItemTableViewCell.m */; };
+		C29BE6CF1CF8A8B70086471C /* UpsellPlanItemTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C29BE6CD1CF8A8B70086471C /* UpsellPlanItemTableViewCell.xib */; };
+		C29BE6D21CF8E7FA0086471C /* ITSPlanDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C29BE6D01CF8E7FA0086471C /* ITSPlanDataSource.m */; };
 		C2ACEB041CF67E33005E72DC /* ITSAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = C2ACEB031CF67E33005E72DC /* ITSAlert.m */; };
 		C2ACEB061CF7DE9D005E72DC /* ITSItsOnTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = C2ACEB051CF7DE9D005E72DC /* ITSItsOnTheme.plist */; };
 		C2ACEB0B1CF7E0BD005E72DC /* ITSMTNTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = C2ACEB071CF7E0BD005E72DC /* ITSMTNTheme.plist */; };
@@ -21,12 +25,19 @@
 		C2D9870D1CF3BC3F00A7CBAA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C2D9870B1CF3BC3F00A7CBAA /* LaunchScreen.storyboard */; };
 		C2D9871A1CF3BE3E00A7CBAA /* ITSCoreAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D987191CF3BE3E00A7CBAA /* ITSCoreAlertView.m */; };
 		C2D9871D1CF3DBC700A7CBAA /* ITSAlertViewBrandingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D9871C1CF3DBC700A7CBAA /* ITSAlertViewBrandingManager.m */; };
-		C2D9871F1CF3ECF700A7CBAA /* ITSAlertViewBranding.plist in Resources */ = {isa = PBXBuildFile; fileRef = C2D9871E1CF3ECF700A7CBAA /* ITSAlertViewBranding.plist */; };
+		C2D9871F1CF3ECF700A7CBAA /* ITSDefaultTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = C2D9871E1CF3ECF700A7CBAA /* ITSDefaultTheme.plist */; };
 		C2D987221CF3FE9700A7CBAA /* UIColor+ITSAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D987211CF3FE9700A7CBAA /* UIColor+ITSAlertView.m */; };
 		C2D987251CF44EC900A7CBAA /* ITSButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C2D987241CF44EC900A7CBAA /* ITSButton.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C29BE6C81CF8A7E90086471C /* Plan.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Plan.h; sourceTree = "<group>"; };
+		C29BE6C91CF8A7E90086471C /* Plan.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Plan.m; sourceTree = "<group>"; };
+		C29BE6CB1CF8A8B70086471C /* UpsellPlanItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpsellPlanItemTableViewCell.h; sourceTree = "<group>"; };
+		C29BE6CC1CF8A8B70086471C /* UpsellPlanItemTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpsellPlanItemTableViewCell.m; sourceTree = "<group>"; };
+		C29BE6CD1CF8A8B70086471C /* UpsellPlanItemTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UpsellPlanItemTableViewCell.xib; sourceTree = "<group>"; };
+		C29BE6D01CF8E7FA0086471C /* ITSPlanDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITSPlanDataSource.m; sourceTree = "<group>"; };
+		C29BE6D11CF8E7FA0086471C /* ITSPlanDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITSPlanDataSource.h; sourceTree = "<group>"; };
 		C2ACEB021CF67E33005E72DC /* ITSAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITSAlert.h; sourceTree = "<group>"; };
 		C2ACEB031CF67E33005E72DC /* ITSAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITSAlert.m; sourceTree = "<group>"; };
 		C2ACEB051CF7DE9D005E72DC /* ITSItsOnTheme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ITSItsOnTheme.plist; sourceTree = "<group>"; };
@@ -48,7 +59,7 @@
 		C2D987191CF3BE3E00A7CBAA /* ITSCoreAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITSCoreAlertView.m; sourceTree = "<group>"; };
 		C2D9871B1CF3DBC700A7CBAA /* ITSAlertViewBrandingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITSAlertViewBrandingManager.h; sourceTree = "<group>"; };
 		C2D9871C1CF3DBC700A7CBAA /* ITSAlertViewBrandingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ITSAlertViewBrandingManager.m; sourceTree = "<group>"; };
-		C2D9871E1CF3ECF700A7CBAA /* ITSAlertViewBranding.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ITSAlertViewBranding.plist; sourceTree = "<group>"; };
+		C2D9871E1CF3ECF700A7CBAA /* ITSDefaultTheme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ITSDefaultTheme.plist; sourceTree = "<group>"; };
 		C2D987201CF3FE9700A7CBAA /* UIColor+ITSAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+ITSAlertView.h"; sourceTree = "<group>"; };
 		C2D987211CF3FE9700A7CBAA /* UIColor+ITSAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+ITSAlertView.m"; sourceTree = "<group>"; };
 		C2D987231CF44EC900A7CBAA /* ITSButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ITSButton.h; sourceTree = "<group>"; };
@@ -85,11 +96,18 @@
 		C2D986FC1CF3BC3F00A7CBAA /* ITSPopUpView */ = {
 			isa = PBXGroup;
 			children = (
+				C29BE6D11CF8E7FA0086471C /* ITSPlanDataSource.h */,
+				C29BE6D01CF8E7FA0086471C /* ITSPlanDataSource.m */,
 				C2D987171CF3BE3E00A7CBAA /* Lib */,
 				C2D987001CF3BC3F00A7CBAA /* AppDelegate.h */,
 				C2D987011CF3BC3F00A7CBAA /* AppDelegate.m */,
 				C2D987031CF3BC3F00A7CBAA /* AlertViewStyleTVC.h */,
 				C2D987041CF3BC3F00A7CBAA /* AlertViewStyleTVC.m */,
+				C29BE6C81CF8A7E90086471C /* Plan.h */,
+				C29BE6C91CF8A7E90086471C /* Plan.m */,
+				C29BE6CB1CF8A8B70086471C /* UpsellPlanItemTableViewCell.h */,
+				C29BE6CC1CF8A8B70086471C /* UpsellPlanItemTableViewCell.m */,
+				C29BE6CD1CF8A8B70086471C /* UpsellPlanItemTableViewCell.xib */,
 				C2D987061CF3BC3F00A7CBAA /* Main.storyboard */,
 				C2D986FD1CF3BC3F00A7CBAA /* Supporting Files */,
 			);
@@ -104,11 +122,11 @@
 				C2ACEB091CF7E0BD005E72DC /* ITSSprintTheme.plist */,
 				C2ACEB0A1CF7E0BD005E72DC /* ITSTelefonicaTheme.plist */,
 				C2ACEB051CF7DE9D005E72DC /* ITSItsOnTheme.plist */,
+				C2D9871E1CF3ECF700A7CBAA /* ITSDefaultTheme.plist */,
 				C2D987091CF3BC3F00A7CBAA /* Assets.xcassets */,
 				C2D9870B1CF3BC3F00A7CBAA /* LaunchScreen.storyboard */,
 				C2D9870E1CF3BC3F00A7CBAA /* Info.plist */,
 				C2D986FE1CF3BC3F00A7CBAA /* main.m */,
-				C2D9871E1CF3ECF700A7CBAA /* ITSAlertViewBranding.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -188,10 +206,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C29BE6CF1CF8A8B70086471C /* UpsellPlanItemTableViewCell.xib in Resources */,
 				C2ACEB061CF7DE9D005E72DC /* ITSItsOnTheme.plist in Resources */,
 				C2ACEB0D1CF7E0BD005E72DC /* ITSSprintTheme.plist in Resources */,
 				C2ACEB0B1CF7E0BD005E72DC /* ITSMTNTheme.plist in Resources */,
-				C2D9871F1CF3ECF700A7CBAA /* ITSAlertViewBranding.plist in Resources */,
+				C2D9871F1CF3ECF700A7CBAA /* ITSDefaultTheme.plist in Resources */,
 				C2D9870D1CF3BC3F00A7CBAA /* LaunchScreen.storyboard in Resources */,
 				C2D9870A1CF3BC3F00A7CBAA /* Assets.xcassets in Resources */,
 				C2ACEB0C1CF7E0BD005E72DC /* ITSSapphireTheme.plist in Resources */,
@@ -207,7 +226,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C29BE6CA1CF8A7E90086471C /* Plan.m in Sources */,
 				C2D9871A1CF3BE3E00A7CBAA /* ITSCoreAlertView.m in Sources */,
+				C29BE6CE1CF8A8B70086471C /* UpsellPlanItemTableViewCell.m in Sources */,
+				C29BE6D21CF8E7FA0086471C /* ITSPlanDataSource.m in Sources */,
 				C2D987251CF44EC900A7CBAA /* ITSButton.m in Sources */,
 				C2D987051CF3BC3F00A7CBAA /* AlertViewStyleTVC.m in Sources */,
 				C2D9871D1CF3DBC700A7CBAA /* ITSAlertViewBrandingManager.m in Sources */,

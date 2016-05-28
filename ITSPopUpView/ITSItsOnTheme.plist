@@ -61,8 +61,6 @@
 				<string>#FFF5F5F5</string>
 			</dict>
 		</dict>
-		<key>dismissOnTapOutside</key>
-		<false/>
 		<key>contentBackground</key>
 		<dict>
 			<key>style</key>
@@ -83,7 +81,7 @@
 			<key>opacity</key>
 			<dict>
 				<key>tintColor</key>
-				<string>#535A5A5A</string>
+				<string>#005A5A5A</string>
 			</dict>
 			<key>blur</key>
 			<dict>

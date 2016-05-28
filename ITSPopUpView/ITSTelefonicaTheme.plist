@@ -82,8 +82,6 @@
 				<string>#FFF5F5F5</string>
 			</dict>
 		</dict>
-		<key>dismissOnTapOutside</key>
-		<false/>
 		<key>contentBackground</key>
 		<dict>
 			<key>style</key>
