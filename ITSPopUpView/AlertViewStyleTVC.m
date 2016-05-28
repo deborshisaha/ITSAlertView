@@ -186,7 +186,6 @@
 	ITSPlanDataSource *planDataSource = [[ITSPlanDataSource alloc] initWithPlansArray:[[NSArray alloc] initWithObjects:plan1, plan2, plan3, nil] ];
 	
 	ITSAlert *notificationAlert = [[ITSAlert alloc] initMultiSelectWithDataSource:planDataSource withTitle:@"No international plan" andDescription:@"Buy an international plan" selectedOptionsBlock:^(NSArray *selectedObjects) {
-		NSLog(@"selectedObjects.count %d", selectedObjects.count);
 	}];
 	
 	[notificationAlert show];
