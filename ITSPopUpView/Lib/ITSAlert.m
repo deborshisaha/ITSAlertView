@@ -75,8 +75,8 @@ const char *InvalidArgumentException = "InvalidArgumentException";
 @property (nonatomic, strong) NSMutableSet *selectedOptionsSet;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) id<UITableViewDataSource, ITSAlertOptionsDelegate> alertOptionsDataSource;
-@property (nonatomic, weak) SelectedOptionsBlock selectedOptionsBlock;
-@property (nonatomic, weak) SelectedOptionBlock tappedOptionBlock;
+@property (nonatomic, strong) SelectedOptionsBlock selectedOptionsBlock;
+@property (nonatomic, strong) SelectedOptionBlock tappedOptionBlock;
 @property (nonatomic, assign) NSInteger selectionLimit;
 @property (nonatomic, assign) BOOL backgroundBlur;
 @property (nonatomic, weak) UIView *parentView;
@@ -270,11 +270,21 @@ const char *InvalidArgumentException = "InvalidArgumentException";
             
             self.frame  = CGRectOffset(_parentView.frame, 0, 0);
             
+            NSMutableArray *buttonArray = [[NSMutableArray alloc] init];
+            
+            if (dt) {
+                [buttonArray addObject:dt];
+            }
+            
+            if (pt) {
+                [buttonArray addObject:pt];
+            }
+            
             _alertView = [[ITSCoreAlertView alloc] initWithTitle: title
                                                         subtitle: description
                                                      headerImage: nil
                                                        tableView: _tableView
-                                                    buttonTitles: @[dt, pt]
+                                                    buttonTitles: buttonArray
                                              negativeButtonIndex:-1
                                              positiveButtonIndex:1
                                                           hidden:^{

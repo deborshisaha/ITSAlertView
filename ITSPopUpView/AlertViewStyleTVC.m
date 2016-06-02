@@ -222,9 +222,9 @@
                                                                            [tapSelectAlert hide];
                                                                        }
                                                                    }
-                                                                dismissTitle:@"Cancel"
+                                                                dismissTitle:nil
                                                           dismissActionBlock:nil
-                                                          primaryActionTitle:@"Add-ons" primaryActionBlock:^{
+                                                          primaryActionTitle:nil primaryActionBlock:^{
                                                               NSLog(@"Add-ons pressed");
                                                               [tapSelectAlert hide];
                                                           }];
