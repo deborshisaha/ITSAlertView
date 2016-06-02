@@ -24,10 +24,6 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 
 @interface ITSCoreAlertView ()
 
-@property(nonatomic, strong) UIView *alertContentView;
-@property(nonatomic, weak) UIView *parentView;
-@property(nonatomic, assign) BOOL backgroundBlur;
-
 // Main sections
 @property(nonatomic, strong) UIView *buttonArea;
 @property(nonatomic, strong) UIView *headerView;
@@ -68,10 +64,10 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
                         hidden:(void (^)(void))hiddenCompletionBlock
             buttonPressedBlock: (void (^)(NSInteger buttonIndex))buttonPressedBlock {
     
-    self = [super initWithFrame:[UIApplication sharedApplication].keyWindow.bounds];
+    self = [super initWithFrame:CGRectZero];
     
     if (self) {
-        _parentView = [UIApplication sharedApplication].keyWindow;
+
         _headerTitle = title;
         _subTitle = subtitle;
         _headerImage = headerImage;
@@ -91,16 +87,14 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
             _alertViewHeaderType = ITSAlertViewHeaderTypeTitleSubtitle;
         }
         
-        [self constructView];
+        [self addSubview:[self headerView]];
+        [self addSubview:[self footerView]];
+        [self addSubview:[self contentView]];
         
-        [self.alertContentView addSubview:[self headerView]];
-        [self.alertContentView addSubview:[self footerView]];
-        [self.alertContentView addSubview:[self contentView]];
-        
+        [self decorateView];
         
         [self layoutSubviews];
         
-        self.alertContentView.frame = CGRectOffset(self.alertContentView.frame, 0, CGRectGetMidY(self.alertContentView.frame) - CGRectGetMidY(_parentView.frame)/2);
     }
 
     return self;
@@ -116,10 +110,10 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
                         hidden: (void (^)(void))hiddenCompletionBlock
             buttonPressedBlock: (void (^)(NSInteger buttonIndex))buttonPressedBlock {
     
-    self = [super initWithFrame:[UIApplication sharedApplication].keyWindow.bounds];
+    self = [super initWithFrame:CGRectZero];
     
     if (self) {
-        _parentView = [UIApplication sharedApplication].keyWindow;
+
         _headerTitle = title;
         _subTitle = subtitle;
         _headerImage = headerImage;
@@ -139,13 +133,13 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
             _alertViewHeaderType = ITSAlertViewHeaderTypeTitleSubtitle;
         }
         
-        [self constructView];
+        [self addSubview:[self headerView]];
+        [self addSubview:[self footerView]];
+        [self addSubview:[self contentView]];
         
-        [self.alertContentView addSubview:[self headerView]];
-        [self.alertContentView addSubview:[self footerView]];
-        [self.alertContentView addSubview:[self contentView]];
-
-        self.alertContentView.frame = CGRectOffset(self.alertContentView.frame, 0, CGRectGetMidY(self.alertContentView.frame) - CGRectGetMidY(_parentView.frame)/2);
+        [self decorateView];
+        
+        [self layoutSubviews];
     }
     
     return self;
@@ -154,9 +148,9 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 - (CGFloat) permittedContentViewHeight {
 	
 	if (isLandscape) {
-		return [ITSAlertViewBrandingManager sharedManager].landscapeHeight  - CGRectGetHeight(self.headerView.frame) - CGRectGetHeight(self.buttonArea.frame);
+		return [ITSAlertViewBrandingManager sharedManager].landscapeHeight  - CGRectGetHeight([self headerView].frame) - CGRectGetHeight([self footerViewFrame]);
 	} else {
-		return [ITSAlertViewBrandingManager sharedManager].potraitHeight  - CGRectGetHeight(self.headerView.frame) - CGRectGetHeight(self.buttonArea.frame);
+		return [ITSAlertViewBrandingManager sharedManager].potraitHeight  - CGRectGetHeight([self headerView].frame) - CGRectGetHeight([self footerViewFrame]);
 	}
 }
 
@@ -165,9 +159,9 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 	CGFloat bodyViewFrameHeight = 0;
 	
 	if (isLandscape) {
-		bodyViewFrameHeight = [ITSAlertViewBrandingManager sharedManager].landscapeHeight  - CGRectGetHeight(self.headerView.frame) - CGRectGetHeight(self.buttonArea.frame);
+		bodyViewFrameHeight = [ITSAlertViewBrandingManager sharedManager].landscapeHeight  - CGRectGetHeight([self headerView].frame) - CGRectGetHeight([self footerView].frame);
 	} else {
-		bodyViewFrameHeight = [ITSAlertViewBrandingManager sharedManager].potraitHeight  - CGRectGetHeight(self.headerView.frame) - CGRectGetHeight(self.buttonArea.frame);
+		bodyViewFrameHeight = [ITSAlertViewBrandingManager sharedManager].potraitHeight  - CGRectGetHeight([self headerView].frame) - CGRectGetHeight([self footerView].frame);
 	}
 	
     if ([ITSAlertViewBrandingManager sharedManager].flexibleHeight) {
@@ -177,120 +171,43 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
     return CGRectMake(0, 0, self.alertViewWidth, bodyViewFrameHeight);
 }
 
-- (instancetype) initPopUpViewInView:(UIView *)view
-		  alertContentBackgroundType: (ITSAlertViewContentBackgroundType)alertViewContentBackgroundType
-{
-	
-	self.parentView = view;
-	
-	self = [super initWithFrame:view.bounds];
-	if (self) {
-		[self constructView];
-	}
-	return self;
-}
-
-- (void) show {
-	
-	if (nil == self.parentView) {
-		return;
-	}
-	
-	if (nil == [self superview]) {
-        self.alertContentView.center = self.center;
-		[self.parentView addSubview:self];
-	}
-	
-	[self.layer setOpacity:0.0f];
-    self.alertContentView.transform = CGAffineTransformMakeScale(0.9f, 0.9f);
+- (void) setHidden:(BOOL)h {
     
-    [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
-        [self.layer setOpacity:1.0f];
-        self.alertContentView.transform = CGAffineTransformIdentity;
-    } completion:nil];
-}
-
-- (void) hide {
-	
-	[UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
-		[self.layer setOpacity:0.0f];
-	} completion:^(BOOL finished) {
-        
-		[self removeFromSuperview];
-        
-        ((!self.hiddenCompletionBlock)? : self.hiddenCompletionBlock());
-        
-	}];
-}
-
-- (UIView *) alertContentView {
-	
-	if (!_alertContentView) {
-		
-		CGFloat xPos = 0;
-		CGFloat yPos = 0;
-		
-		if (isLandscape) {
-			xPos = ((nil != self.parentView) ? CGRectGetWidth(self.parentView.bounds) / 2 : 0) - [ITSAlertViewBrandingManager sharedManager].landscapeWidth / 2;
-			yPos = ((nil != self.parentView) ? CGRectGetHeight(self.parentView.bounds) / 2 : 0) - [ITSAlertViewBrandingManager sharedManager].landscapeHeight / 2;
-		} else {
-			xPos = ((nil != self.parentView) ? CGRectGetWidth(self.parentView.bounds) / 2 : 0) - [ITSAlertViewBrandingManager sharedManager].potraitWidth / 2;
-			yPos = ((nil != self.parentView) ? CGRectGetHeight(self.parentView.bounds) / 2 : 0) - [ITSAlertViewBrandingManager sharedManager].potraitHeight / 2;
-		}
-		
-		UIView *view = nil;
-		CGRect frame = CGRectMake(xPos, yPos, self.alertViewWidth, self.alertViewHeight);
-        
-		if ([ITSAlertViewBrandingManager sharedManager].alertViewContentBackgroundType == ITSAlertViewContentBackgroundTypeSolid) {
-			
-			view = [[UIView alloc] initWithFrame:frame];
-			[view setBackgroundColor:[ITSAlertViewBrandingManager sharedManager].contentBackgroundSolidColor];
-			
-		} else if ([ITSAlertViewBrandingManager sharedManager].alertViewContentBackgroundType == ITSAlertViewContentBackgroundTypeGlossy) {
-			
-			UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
-			UIVisualEffectView *blurView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-			blurView.frame = frame;
-			blurView.tintColor = [ITSAlertViewBrandingManager sharedManager].contentBackgroundGlossyTintColor;
-			
-			view = blurView;
-		}
-		
-		// Configurable
-		[view.layer setCornerRadius: [ITSAlertViewBrandingManager sharedManager].cornerRadius];
-		[view.layer setMasksToBounds:YES];
-		
-		_alertContentView = view;
-		
-		CGFloat alphaComponent = CGColorGetAlpha([ITSAlertViewBrandingManager sharedManager].backgroundOpacityColor.CGColor);
-		
-		if (alphaComponent < 0.1f) {
-			// When the background color is too light, add a border to help user differentiate with background and notification view
-			_alertContentView.layer.borderWidth = 0.5f;
-			_alertContentView.layer.borderColor = [UIColor colorWithWhite:0.9f alpha:1.0f].CGColor;
-		}
-
-		view = nil;
-	}
+    __weak typeof(self) weakSelf = self;
     
-	return _alertContentView;
+    if (h && !self.isHidden) {
+        [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
+            [weakSelf.layer setOpacity:0.0f];
+        } completion:^(BOOL finished) {
+            
+            [weakSelf removeFromSuperview];
+            
+            ((!weakSelf.hiddenCompletionBlock)? : weakSelf.hiddenCompletionBlock());
+            
+        }];
+    }
 }
 
-- (void) setBackgroundBlur:(BOOL)backgroundBlur {
-	
-	_backgroundBlur = backgroundBlur;
-	
-	if (!_backgroundBlur) {
-		self.backgroundColor = [ITSAlertViewBrandingManager sharedManager].backgroundOpacityColor;
-	}
-}
+- (void) decorateView {
+    
+    CGRect frame = CGRectMake(0, 0, self.alertViewWidth, self.alertViewHeight);
+    self.frame = frame;
+    
+    if ([ITSAlertViewBrandingManager sharedManager].alertViewContentBackgroundType == ITSAlertViewContentBackgroundTypeSolid) {
+        [self setBackgroundColor:[ITSAlertViewBrandingManager sharedManager].contentBackgroundSolidColor];
+    }
+    
+    // Configurable
+    [self.layer setCornerRadius: [ITSAlertViewBrandingManager sharedManager].cornerRadius];
+    [self.layer setMasksToBounds:YES];
 
-- (void) constructView {
-	
-	// Load from pop up view configuration manager
-	self.backgroundBlur = NO;
-	
-	[self addSubview:self.alertContentView];
+    CGFloat alphaComponent = CGColorGetAlpha([ITSAlertViewBrandingManager sharedManager].backgroundOpacityColor.CGColor);
+    
+    if (alphaComponent < 0.1f) {
+        // When the background color is too light, add a border to help user differentiate with background and notification view
+        self.layer.borderWidth = 0.5f;
+        self.layer.borderColor = [UIColor colorWithWhite:0.9f alpha:1.0f].CGColor;
+    }
 }
 
 - (void) addButtonsToView: (UIView *) view {
@@ -346,7 +263,7 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
         
         btn.backgroundColor = [UIColor clearColor];
 		
-        [btn setTag:idx + 256];
+        [btn setTag:idx];
 		[btn addTarget:self action:@selector(pressedOnTitleButton:) forControlEvents:UIControlEventTouchUpInside];
 		[view addSubview:btn];
 		
@@ -362,10 +279,10 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 - (void)pressedOnTitleButton:(UIButton *)sender {
 	
 	if (self.buttonPressedBlock) {
-		self.buttonPressedBlock(sender.tag -256);
+		self.buttonPressedBlock(sender.tag);
 	}
-	
-	[self hide];
+    
+    self.hidden = YES;
 }
 
 - (ITSButton *) buttonWithTitle:(NSString *)title width:(CGFloat)width xPos:(CGFloat)xPos yPos:(CGFloat)yPos negativeButton: (BOOL) negative positiveButton: (BOOL) positive {
@@ -415,31 +332,25 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
     NSInteger numberOfButtonLayers = 1;
 	
 	if (isLandscape) {
-		numberOfButtonLayers = ((self.buttonTitles.count > 3)? self.buttonTitles.count:numberOfButtonLayers);
+        numberOfButtonLayers = ((self.buttonTitles.count > 3)? self.buttonTitles.count: ((self.buttonTitles.count == 0)?0:numberOfButtonLayers));
 	} else {
-		numberOfButtonLayers = ((self.buttonTitles.count > 2)? self.buttonTitles.count:numberOfButtonLayers);
+		numberOfButtonLayers = ((self.buttonTitles.count > 2)? self.buttonTitles.count: ((self.buttonTitles.count == 0)?0:numberOfButtonLayers));
 	}
     
-    return CGRectMake(0, 0 , self.alertViewWidth, (44.5f * numberOfButtonLayers));
+    return CGRectMake(0, 0 , self.alertViewWidth, ((numberOfButtonLayers == 0)? 10.0f:(44.5f * numberOfButtonLayers)));
 }
 
 - (UIView *) footerView {
     
-    self.buttonArea.frame = CGRectOffset(self.buttonArea.frame, 0, self.alertViewHeight - CGRectGetHeight(self.buttonArea.frame));
-
+    self.buttonArea.frame = CGRectOffset(self.buttonArea.frame, 0, self.alertViewHeight - CGRectGetHeight([self footerViewFrame]));
+    
     return self.buttonArea;
 }
 
 - (UIView *) buttonArea {
 	
 	if (_buttonArea == nil) {
-		
-		NSInteger numberOfButtonLayers = 1;
-		
-		if (self.buttonTitles.count > 2) {
-			numberOfButtonLayers = self.buttonTitles.count;
-		}
-		
+				
 		_buttonArea = [[UIView alloc] initWithFrame: [self footerViewFrame]];
         _buttonArea.backgroundColor = [UIColor clearColor];
         
@@ -581,7 +492,7 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewHeaderType) {
 }
 
 - (CGFloat) alertViewHeight {
-    return CGRectGetHeight(self.headerView.frame) + CGRectGetHeight([self contentView].frame) + CGRectGetHeight([self footerViewFrame]);
+    return CGRectGetHeight([self headerView].frame) + CGRectGetHeight([self contentView].frame) + CGRectGetHeight([self footerViewFrame]);
 }
 
 - (void) layoutSubviews {

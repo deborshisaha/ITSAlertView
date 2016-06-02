@@ -112,6 +112,4 @@ typedef NS_ENUM(NSUInteger, ITSAlertViewBackgroundType) {
                         hidden: (void (^)(void)) hiddenCompletionBlock
             buttonPressedBlock: (void (^)(NSInteger buttonIndex))buttonPressedBlock;
 
-- (void) show;
-
 @end

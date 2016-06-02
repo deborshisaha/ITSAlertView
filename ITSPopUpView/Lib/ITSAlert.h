@@ -23,7 +23,7 @@ typedef void (^ButtonClickBlock)(void);
 
 @end
 
-@interface ITSAlert : NSObject
+@interface ITSAlert : UIView
 
 // Single Tap
 - (instancetype) initTapSelectWithDataSource: (id) dataSource withTitle:(NSString *) title andDescription:(NSString *) description tappedOptionBlock: (SelectedOptionBlock) tOB dismissTitle:(NSString *)dt dismissActionBlock:(ButtonClickBlock) dAB primaryActionTitle:(NSString *)pt primaryActionBlock: (ButtonClickBlock) pAB;
@@ -52,6 +52,9 @@ typedef void (^ButtonClickBlock)(void);
 // Simple Notification alert having title, message and okay button
 - (instancetype) initNotificationAlertWithTitle:(NSString *) title andMessage:(NSString *) message buttonTitle: (NSString *)buttonTitle buttonBlock: (ButtonClickBlock) buttonPressedBlock ;
 
+- (instancetype) initNewArchitecture;
+
 - (void) show;
+- (void) hide;
 
 @end

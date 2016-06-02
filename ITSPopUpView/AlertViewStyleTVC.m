@@ -28,7 +28,7 @@
 	[super viewDidLoad];
     
     if (!_stylesArray) {
-        _stylesArray = [NSArray arrayWithObjects:@"Multiple Select", @"Single Select", @"Multiple Select with limit", @"Simple Alert", @"Notification Alert", @"Custom Multi Select", @"On option tap action", nil];
+        _stylesArray = [NSArray arrayWithObjects:@"Multiple Select", @"Single Select", @"Multiple Select with limit", @"Simple Alert", @"Notification Alert", @"Custom Multi Select", @"On option tap action", @"New Architecture", nil];
     }
     
     if (!_customerThemesArray) {
@@ -168,6 +168,9 @@
 		case 6:
 			[self customTapSelect];
 			break;
+        case 7:
+            [self newArchitecture];
+            break;
         default:
             break;
     }
@@ -194,6 +197,12 @@
 	[multiSelectAlert show];
 }
 
+- (void) newArchitecture {
+    
+    ITSAlert *refactoredAlert = [[ITSAlert alloc] initNewArchitecture];
+    [refactoredAlert show];
+}
+
 - (void) customTapSelect {
 	
     Plan *plan1 = [[Plan alloc] initWithPlanName:@"Mexico calling" planDescription:@"Good plan to call Mexico" planPrice:@(21)];
@@ -202,16 +211,23 @@
     
     ITSPlanDataSource *planDataSource = [[ITSPlanDataSource alloc] initWithPlansArray:[[NSArray alloc] initWithObjects:plan1, plan2, plan3, nil] ];
     
-    ITSAlert *tapSelectAlert = [[ITSAlert alloc] initTapSelectWithDataSource:planDataSource withTitle:@"Wanna make international call?" andDescription:@"Simply buy an international add-on to make international calls." tappedOptionBlock:^(id selectedObject) {
-        
-        if ([selectedObject isKindOfClass:([Plan class])]) {
-            Plan *plan = (Plan *) selectedObject;
-            NSLog(@"Add-on : %@",plan.planName);
-        }
-        
-    } dismissTitle:@"Cancel" dismissActionBlock:nil primaryActionTitle:@"Add-ons" primaryActionBlock:^{
-        NSLog(@"Add-ons pressed");
-    }];
+    __block ITSAlert *tapSelectAlert = [[ITSAlert alloc] initTapSelectWithDataSource: planDataSource
+                                                                   withTitle: @"Wanna make international call?"
+                                                              andDescription: @"Simply buy an international add-on to make international calls."
+                                                           tappedOptionBlock: ^(id selectedObject) {
+                                                                       if ([selectedObject isKindOfClass:([Plan class])]) {
+                                                                           Plan *plan = (Plan *) selectedObject;
+                                                                           NSLog(@"Add-on : %@",plan.planName);
+                                                                           
+                                                                           [tapSelectAlert hide];
+                                                                       }
+                                                                   }
+                                                                dismissTitle:@"Cancel"
+                                                          dismissActionBlock:nil
+                                                          primaryActionTitle:@"Add-ons" primaryActionBlock:^{
+                                                              NSLog(@"Add-ons pressed");
+                                                              [tapSelectAlert hide];
+                                                          }];
     
 	[tapSelectAlert show];
 }
@@ -224,10 +240,10 @@
 
 - (void) multipleOptionsAlertClicked {
     
-    NSArray *multiSelectOptionsArray = [NSArray arrayWithObjects:@"Green", @"Yellow", @"Red", nil];
+    __weak NSArray *multiSelectOptionsArray = [NSArray arrayWithObjects:@"Green", @"Yellow", @"Red", nil];
     
     ITSAlert *alertViewLauncher = [[ITSAlert alloc] initMultiSelectWithOptions:multiSelectOptionsArray withTitle:@"Which is your favorite color?" andDescription:@"Knowing your favorite color makes this world a better place!! Not really..." selectedOptionsBlock:^(NSArray *objects) {
-        NSLog(@"%lu", (unsigned long)objects.count);
+        NSLog(@">>> %lu", (unsigned long)objects.count);
     } selectionLimit:multiSelectOptionsArray.count];
     
     [alertViewLauncher show];
@@ -259,8 +275,6 @@
     
     [alertViewLauncher show];
 }
-
-
 
 - (void) simpleAlertClicked {
     

@@ -75,9 +75,11 @@ const char *InvalidArgumentException = "InvalidArgumentException";
 @property (nonatomic, strong) NSMutableSet *selectedOptionsSet;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) id<UITableViewDataSource, ITSAlertOptionsDelegate> alertOptionsDataSource;
-@property (nonatomic, strong) SelectedOptionsBlock selectedOptionsBlock;
-@property (nonatomic, strong) SelectedOptionBlock tappedOptionBlock;
+@property (nonatomic, weak) SelectedOptionsBlock selectedOptionsBlock;
+@property (nonatomic, weak) SelectedOptionBlock tappedOptionBlock;
 @property (nonatomic, assign) NSInteger selectionLimit;
+@property (nonatomic, assign) BOOL backgroundBlur;
+@property (nonatomic, weak) UIView *parentView;
 
 @end
 
@@ -103,7 +105,6 @@ const char *InvalidArgumentException = "InvalidArgumentException";
 /**
  *	Multi select alert view with selection limiter
  */
-
 - (instancetype) initMultiSelectWithOptions: (NSArray *) options
                                   withTitle: (NSString *) title
                              andDescription: (NSString *) description
@@ -147,7 +148,13 @@ const char *InvalidArgumentException = "InvalidArgumentException";
         
         if (!_alertView) {
             
-            __strong __typeof__(self) strongSelf = self;
+            __weak __typeof__(self) weakSelf = self;
+            
+            _parentView = [UIApplication sharedApplication].keyWindow;
+            
+            self.backgroundBlur = NO;
+            
+            self.frame  = CGRectOffset(_parentView.frame, 0, 0);
             
             _alertView = [[ITSCoreAlertView alloc] initWithTitle: title
                                                         subtitle: description
@@ -158,33 +165,34 @@ const char *InvalidArgumentException = "InvalidArgumentException";
                                              positiveButtonIndex:-1
                                                           hidden:^{
                                                               // Clean up
-                                                              [strongSelf cleanUp];
+                                                              [weakSelf hide];
                                                           }
                           
                                               buttonPressedBlock:^(NSInteger buttonIndex) {
                                                   
                                                   if (buttonIndex == 1) {
                                                       
-                                                      NSArray *selectedIndicesIndexPath = [strongSelf.selectedOptionsSet allObjects];
+                                                      NSArray *selectedIndicesIndexPath = [weakSelf.selectedOptionsSet allObjects];
                                                       
                                                       if (!selectedIndicesIndexPath || selectedIndicesIndexPath.count == 0) {
-                                                          strongSelf.selectedOptionsBlock(nil);
+                                                          weakSelf.selectedOptionsBlock(nil);
                                                       }
                                                       
                                                       NSMutableArray *selectedObjects= [[NSMutableArray alloc] initWithCapacity:selectedIndicesIndexPath.count];
                                                       
                                                       for (NSIndexPath *idxPath in selectedIndicesIndexPath) {
 														  
-														  if ([strongSelf.tableView.dataSource respondsToSelector:@selector(objectAtIndexPath:)]) {
-															  [selectedObjects addObject:[(id<ITSAlertOptionsDelegate>)strongSelf.tableView.dataSource objectAtIndexPath:idxPath]];
+														  if ([weakSelf.tableView.dataSource respondsToSelector:@selector(objectAtIndexPath:)]) {
+															  [selectedObjects addObject:[(id<ITSAlertOptionsDelegate>)weakSelf.tableView.dataSource objectAtIndexPath:idxPath]];
 														  } else {
 															  [selectedObjects addObject:idxPath];
 														  }
                                                       }
                                                       
-                                                      strongSelf.selectedOptionsBlock(selectedObjects);
+                                                      weakSelf.selectedOptionsBlock(selectedObjects);
                                                   }
                                               }];
+            [self addSubview:_alertView];
         }
 	}
 	
@@ -197,7 +205,15 @@ const char *InvalidArgumentException = "InvalidArgumentException";
     self = [super init];
     
     if (self) {
+        
         __weak __typeof__(self) weakSelf = self;
+        
+        _parentView = [UIApplication sharedApplication].keyWindow;
+        
+        self.backgroundBlur = NO;
+        
+        self.frame  = CGRectOffset(_parentView.frame, 0, 0);
+        
         _alertView = [[ITSCoreAlertView alloc] initWithTitle:title
                                                     subtitle:message
                                                  headerImage:nil
@@ -206,10 +222,12 @@ const char *InvalidArgumentException = "InvalidArgumentException";
                                          negativeButtonIndex:-1
                                          positiveButtonIndex:-1
                                                       hidden:^{
-                                                          [weakSelf cleanUp];
+                                                          [weakSelf hide];
                                                       } buttonPressedBlock:^(NSInteger buttonIndex) {
                                                           (!buttonPressedBlock)?:buttonPressedBlock();
                                                       }];
+        
+        [self addSubview:_alertView];
     }
     
     return self;
@@ -226,7 +244,7 @@ const char *InvalidArgumentException = "InvalidArgumentException";
     self = [super init];
     
     if (self) {
-        
+        _parentView = [UIApplication sharedApplication].keyWindow;
         _alertOptionsDataSource = dataSource;
         _tappedOptionBlock = tOB;
         _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
@@ -244,34 +262,56 @@ const char *InvalidArgumentException = "InvalidArgumentException";
         
         if (!_alertView) {
             
-            __strong ButtonClickBlock strongpAB = pAB;
-            __strong ButtonClickBlock strongdAB = dAB;
-            __strong __typeof__(self) strongSelf = self;
+            __weak __typeof__(self) weakSelf = self;
+            
+            _parentView = [UIApplication sharedApplication].keyWindow;
+            
+            self.backgroundBlur = NO;
+            
+            self.frame  = CGRectOffset(_parentView.frame, 0, 0);
             
             _alertView = [[ITSCoreAlertView alloc] initWithTitle: title
                                                         subtitle: description
                                                      headerImage: nil
                                                        tableView: _tableView
-                                                    buttonTitles:@[dt, pt]
+                                                    buttonTitles: @[dt, pt]
                                              negativeButtonIndex:-1
                                              positiveButtonIndex:1
                                                           hidden:^{
                                                               // Clean up
-                                                              [strongSelf cleanUp];
+                                                              [weakSelf hide];
                                                           }
                           
                                               buttonPressedBlock:^(NSInteger buttonIndex) {
                                                                                                     
                                                   if (buttonIndex == 1 ) {
-                                                      (!strongpAB)?: strongpAB();
+                                                      (!pAB)?: pAB();
                                                   } else if (buttonIndex == 0) {
-                                                      (!strongdAB)?: strongdAB();
+                                                      (!dAB)?: dAB();
                                                   }
                                               }];
+            [self addSubview:_alertView];
         }
     }
     
     return self;
+}
+
+- (void) setBackgroundBlur:(BOOL)backgroundBlur {
+    
+    _backgroundBlur = backgroundBlur;
+    
+    if (!_backgroundBlur) {
+        self.backgroundColor = [ITSAlertViewBrandingManager sharedManager].backgroundOpacityColor;
+    }
+}
+
+- (void) constructView {
+    
+    // Load from pop up view configuration manager
+    self.backgroundBlur = NO;
+    
+    [self addSubview:self.alertView];
 }
 
 - (instancetype) initSimpleAlertWithTitle:(NSString *) title andMessage:(NSString *) message positiveTitle: (NSString *)pt negativeTitle: (NSString *)nt positiveBlock: (ButtonClickBlock) positiveBlock negativeBlock: (ButtonClickBlock) negativeBlock {
@@ -279,7 +319,15 @@ const char *InvalidArgumentException = "InvalidArgumentException";
     self = [super init];
     
     if (self) {
+        
         __weak __typeof__(self) weakSelf = self;
+        
+        _parentView = [UIApplication sharedApplication].keyWindow;
+        
+        self.backgroundBlur = NO;
+        
+        self.frame  = CGRectOffset(_parentView.frame, 0, 0);
+        
         _alertView = [[ITSCoreAlertView alloc] initWithTitle:title
                                                     subtitle:message
                                                  headerImage:nil
@@ -288,7 +336,8 @@ const char *InvalidArgumentException = "InvalidArgumentException";
                                          negativeButtonIndex:-1
                                          positiveButtonIndex:-1
                                                       hidden:^{
-            [weakSelf cleanUp];
+            [weakSelf hide];
+                                                          
         } buttonPressedBlock:^(NSInteger buttonIndex) {
             
             if (buttonIndex == 0) {
@@ -299,13 +348,11 @@ const char *InvalidArgumentException = "InvalidArgumentException";
                 (!positiveBlock)?:positiveBlock();
             }
         }];
+        
+        [self addSubview:_alertView];
     }
     
     return self;
-}
-
-- (void) show {
-    [self.alertView show];
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -355,13 +402,86 @@ const char *InvalidArgumentException = "InvalidArgumentException";
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-- (void) cleanUp {
-	[_alertOptionsDataSource cleanUp];
-	_alertOptionsDataSource = nil;
-    _alertView = nil;
-    _selectedOptionsSet = nil;
-    _tableView = nil;
-    _selectedOptionsBlock = nil;
+- (instancetype) initNewArchitecture {
+    
+    self = [super init];
+    
+    if (self) {
+        
+        __weak __typeof__(self) weakSelf = self;
+        
+        _parentView = [UIApplication sharedApplication].keyWindow;
+
+        self.backgroundBlur = NO;
+
+        self.frame  = CGRectOffset(_parentView.frame, 0, 0);
+        
+        _alertView = [[ITSCoreAlertView alloc] initWithTitle:@"Alert"
+                                                    subtitle:@"Architecture"
+                                                 headerImage:nil
+                                                 description:nil
+                                                buttonTitles:@[@"Cancel", @"Ok"]
+                                         negativeButtonIndex:-1
+                                         positiveButtonIndex:-1
+                                                      hidden:^{
+                                                          [weakSelf hide];
+                                                      }
+                                          buttonPressedBlock:nil];
+        
+        [self addSubview:_alertView];
+        
+    }
+    
+    return self;
+}
+
+- (void) show {
+    
+    __weak typeof(self) weakSelf = self;
+    
+    if (nil == self.parentView) {
+        return;
+    }
+    
+    if (nil == [self superview]) {
+        self.alertView.center = self.center;
+        [self.parentView addSubview:self];
+    }
+    
+    [self.layer setOpacity:0.0f];
+    self.alertView.transform = CGAffineTransformMakeScale(0.9f, 0.9f);
+    
+    [UIView animateWithDuration:0.2f delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
+        [weakSelf.layer setOpacity:1.0f];
+        weakSelf.alertView.transform = CGAffineTransformIdentity;
+    } completion:nil];
+}
+
+- (void) hide {
+    
+    __weak typeof(self) weakSelf = self;
+    
+    if (self.alertView.superview) {
+        self.alertView.hidden = YES;
+        return;
+    }
+    
+    [UIView animateWithDuration:0.1f delay:0.0f options:UIViewAnimationOptionCurveEaseIn animations:^{
+        [weakSelf.layer setOpacity:0.0f];
+    } completion:^(BOOL finished) {
+        
+        [weakSelf removeFromSuperview];
+        
+        if (_alertOptionsDataSource) {
+            [_alertOptionsDataSource cleanUp];
+            _alertOptionsDataSource = nil;
+        }
+        
+        _alertView = nil;
+        _selectedOptionsSet = nil;
+        _tableView = nil;
+        _selectedOptionsBlock = nil;
+    }];
 }
 
 @end
